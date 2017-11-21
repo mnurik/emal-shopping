@@ -1,4 +1,5 @@
-export const SERVER_URL = 'http://emall.shopping/api/Product/'
+export const SERVER_URL = 'http://emall.shopping/'
+export const API = SERVER_URL + 'api/Product/'
 
 /**
  gets body returned by a network request
@@ -32,10 +33,12 @@ const checkStatus = response => {
 }
 
 const request = url =>
-  fetch(`${SERVER_URL}/${url}`)
+  fetch(`${API}/${url}`)
     .then(response => response.json())
     .then(response => response.Result)
 
-export const fetchProducts = (parent = 0) => request('GetProductGroups?parentId=' + parent)
+export const fetchGroups = (parentId = 0) => request(`GetProductGroups?parentId=` + parentId)
+export const fetchProducts = (groupId, pageNum = 1, size = 10) =>
+  request(`GetProducts?groupId=${groupId}&pageNum=${pageNum}&size=${size}`)
 
 export const auth = (userName, password) => request(`Login?userName=${userName}&password=${password}`)
