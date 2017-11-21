@@ -4,7 +4,7 @@ import { StatusBar } from 'react-native'
 import Login from '../screens/Login'
 import GroupList from '../screens/GroupList'
 import ProductList from '../screens/ProductList'
-import Options from '../screens/Options'
+import Product from '../screens/Product'
 import Themes from '../screens/Themes'
 
 const LoginStack = StackNavigator(
@@ -36,5 +36,8 @@ export default StackNavigator({
     navigationOptions: ({ navigation }) => ({
       headerTitle: navigation.state.params.title
     })
+  },
+  Product: {
+    screen: Product
   }
 })

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { FlatList } from 'react-native'
+import { FlatList, ActivityIndicator } from 'react-native'
 import Proptypes from 'prop-types'
 
 import { fetchGroups } from './../utils/services'
@@ -7,10 +7,12 @@ import ListItem from '../components/List/ListItem'
 import Separator from '../components/List/Separator'
 
 export default class GroupList extends Component {
-  state = { groups: [] }
+  state = { groups: [], loading: true }
 
   render() {
-    return (
+    return this.state.loading ? (
+      <ActivityIndicator size="small" />
+    ) : (
       <FlatList
         data={this.state.groups}
         renderItem={({ item }) => (
@@ -25,7 +27,8 @@ export default class GroupList extends Component {
   componentDidMount() {
     fetchGroups(this.props.navigation.state.params.parentId).then(groups =>
       this.setState({
-        groups
+        groups,
+        loading: false
       })
     )
   }
