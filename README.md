@@ -1,4 +1,4 @@
-# CurrencyConverter
+# Emal Shopping
 ## Running things
 Use `yarn run android` to start the development server and run the app on a connected device. Logging output will be displayed in the terminal where this command was run.
 

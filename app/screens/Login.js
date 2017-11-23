@@ -32,7 +32,7 @@ export default class Home extends Component {
     auth(this.state.username, this.state.password)
       .then(response => storage.setItem('id', response.Id))
       .then(() => {
-        this.props.navigation.navigate('GroupList', { title: 'Product List' })
+        this.props.history.push('/grouplist/0')
       })
   }
 }

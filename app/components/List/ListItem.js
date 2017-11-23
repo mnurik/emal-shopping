@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableHighlight, StyleSheet, Image } from 'react-native'
+import { Link } from 'react-router-native'
 import Proptypes from 'prop-types'
 
 import Icon from './Icon'
@@ -9,7 +10,7 @@ import colors from '../../config/style'
 export default class ListItem extends Component {
   render() {
     return (
-      <TouchableHighlight onPress={this.props.onPress} underlayColor={colors.border}>
+      <Link to={this.props.url} underlayColor={colors.border}>
         <View style={style.row}>
           {this.props.imgSrc && <Image style={{ width: 50, height: 50 }} source={{ uri: this.props.imgSrc }} />}
           <Text style={style.text}>{this.props.text}</Text>
@@ -24,7 +25,7 @@ export default class ListItem extends Component {
           )}
           {this.props.customIcon}
         </View>
-      </TouchableHighlight>
+      </Link>
     )
   }
 }
