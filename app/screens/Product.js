@@ -1,46 +1,38 @@
-import React, { Component } from 'react'
-import { ScrollView, Image } from 'react-native'
-import { MapView } from 'expo'
-import Proptypes from 'prop-types'
-import Icon from 'react-native-vector-icons/FontAwesome'
-import { getProduct, SERVER_URL } from './../utils/services'
+import React, { Component } from 'react';
+import { ScrollView, Image, Text } from 'react-native';
+import { MapView } from 'expo';
+import Proptypes from 'prop-types';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { getProduct, getAddress, SERVER_URL } from './../utils/services';
 
 class Product extends Component {
   state = {
-    mapRegion: { latitude: 37.78825, longitude: -122.4324, latitudeDelta: 0.0922, longitudeDelta: 0.0421 },
-    product: {}
-  }
-
-  _handleMapRegionChange = mapRegion => {
-    this.setState({ mapRegion })
-  }
+    product: {},
+    addresses: []
+  };
 
   componentDidMount() {
-    getProduct(this.props.navigation.state.params.productId).then(product => this.setState({ product }))
+    const { productId } = this.props.match.params;
+    getProduct(productId).then(product =>
+      this.setState({ product }, () => {
+        getAddress(productId, this.state.product['FK_SP_Supplier']).then(addresses => this.setState({ addresses }));
+      })
+    );
   }
 
   render() {
-    const { product } = this.state
+    const { product } = this.state;
     return (
       <ScrollView>
         <Image
-          source={{
-            uri: `${SERVER_URL}img/${product.ImageURL}`
-          }}
-          style={{ height: 140, width: 200 }}
+          source={{ uri: `${SERVER_URL}img/${product.ImageURL}` }}
+          style={{ alignSelf: 'stretch', height: 140, width: 200 }}
         />
-        <MapView
-          style={{ alignSelf: 'stretch', height: 200 }}
-          region={this.state.mapRegion}
-          onRegionChange={this._handleMapRegionChange}
-        />
+        {this.state.addresses.map(address => <Text>{address.Address}</Text>)}
+        <MapView style={{ alignSelf: 'stretch', height: 200 }} />
       </ScrollView>
-    )
+    );
   }
 }
 
-export default Product
-
-Product.propTypes = {
-  navigation: Proptypes.object
-}
+export default Product;

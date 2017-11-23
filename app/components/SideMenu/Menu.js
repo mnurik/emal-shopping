@@ -1,9 +1,9 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { Link } from 'react-router-native'
-import { Dimensions, StyleSheet, ScrollView, View, Text } from 'react-native'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-native';
+import { Dimensions, StyleSheet, ScrollView, View, Text } from 'react-native';
 
-const window = Dimensions.get('window')
+const window = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   menu: {
@@ -11,14 +11,15 @@ const styles = StyleSheet.create({
     width: window.width,
     height: window.height,
     backgroundColor: 'gray',
-    padding: 10
+    padding: 10,
+    paddingTop: 30
   },
   item: {
     fontSize: 14,
     fontWeight: '300',
     paddingTop: 5
   }
-})
+});
 
 const Menu = ({ onItemSelected }) => {
   return (
@@ -30,7 +31,7 @@ const Menu = ({ onItemSelected }) => {
         <Text style={styles.item}>Products</Text>
       </Link>
     </View>
-  )
-}
+  );
+};
 
-export default Menu
+export default Menu;
