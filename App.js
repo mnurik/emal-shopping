@@ -1,19 +1,21 @@
-import React, { Component } from 'react'
-import { View } from 'react-native'
-import { NativeRouter } from 'react-router-native'
+import React, { Component } from 'react';
+import { View } from 'react-native';
+import { NativeRouter, AndroidBackButton } from 'react-router-native';
 
-import Routes from './app/routes'
-import SideMenu from './app/components/SideMenu/SideMenu'
-import Login from './app/screens/Login'
+import Routes from './app/routes';
+import SideMenu from './app/components/SideMenu/SideMenu';
+import Login from './app/screens/Login';
 
 export default class App extends Component {
   render() {
     return (
       <NativeRouter>
-        <SideMenu>
-          <Routes />
-        </SideMenu>
+        <AndroidBackButton>
+          <SideMenu>
+            <Routes />
+          </SideMenu>
+        </AndroidBackButton>
       </NativeRouter>
-    )
+    );
   }
 }

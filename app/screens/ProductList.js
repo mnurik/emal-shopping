@@ -26,7 +26,7 @@ export default class ProductList extends Component {
             <ListItem
               url={`/product/${item.Id}`}
               text={`${item.Name} - ${item.Price} AZN`}
-              imgSrc={`${item.SERVER_URL}img/${item.ImageURL}`}
+              imgSrc={`${SERVER_URL}img/${item.ImageURL}`}
             />
           )}
           keyExtractor={item => item.Id}

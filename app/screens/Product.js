@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
-import { ScrollView, Image, Text } from 'react-native';
-import { MapView } from 'expo';
+import { ScrollView, Image, Text, FlatList, View, StyleSheet } from 'react-native';
 import Proptypes from 'prop-types';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { getProduct, getAddress, SERVER_URL } from './../utils/services';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#ecf0f1',
+    paddingTop: 30
+  }
+});
 
 class Product extends Component {
   state = {
@@ -24,12 +31,13 @@ class Product extends Component {
     const { product } = this.state;
     return (
       <ScrollView>
-        <Image
-          source={{ uri: `${SERVER_URL}img/${product.ImageURL}` }}
-          style={{ alignSelf: 'stretch', height: 140, width: 200 }}
-        />
-        {this.state.addresses.map(address => <Text>{address.Address}</Text>)}
-        <MapView style={{ alignSelf: 'stretch', height: 200 }} />
+        <View style={styles.container}>
+          <Image
+            source={{ uri: `${SERVER_URL}img/${product.ImageURL}` }}
+            style={{ alignSelf: 'stretch', height: 140 }}
+          />
+          <FlatList data={this.state.addresses} renderItem={({ item }) => <Text>{item.Address}</Text>} />
+        </View>
       </ScrollView>
     );
   }

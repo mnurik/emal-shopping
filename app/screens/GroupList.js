@@ -17,11 +17,12 @@ const styles = StyleSheet.create({
 });
 
 export default class GroupList extends Component {
-  state = { groups: [] };
+  state = { groups: [], loading: true };
 
   render() {
     return (
       <View style={styles.container}>
+        <ActivityIndicator animating={this.state.loading} />
         <FlatList
           data={this.state.groups}
           renderItem={({ item }) => (
@@ -37,16 +38,17 @@ export default class GroupList extends Component {
     );
   }
 
-  fetchData = () => {
-    fetchGroups(this.props.match.params.parentId).then(groups => this.setState({ groups }));
+  fetchData = parentId => {
+    this.setState({ loading: true });
+    fetchGroups(parentId).then(groups => this.setState({ groups, loading: false }));
   };
 
-  componentWillMount() {
-    this.fetchData();
+  componentDidMount() {
+    this.fetchData(this.props.match.params.parentId);
   }
 
-  componentWillReceiveProps() {
-    this.fetchData();
+  componentWillReceiveProps(nextProps) {
+    this.fetchData(nextProps.match.params.parentId);
   }
 }
 

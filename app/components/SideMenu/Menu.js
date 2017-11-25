@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 const Menu = ({ onItemSelected }) => {
   return (
     <View style={styles.menu}>
-      <Link to="/login" onPress={onItemSelected}>
+      <Link to="/" onPress={onItemSelected}>
         <Text style={styles.item}>Login</Text>
       </Link>
       <Link to="/grouplist/0" onPress={onItemSelected}>

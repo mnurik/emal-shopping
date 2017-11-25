@@ -1,20 +1,28 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Redirect, Route, Switch, withRouter } from 'react-router-native';
+import { Route, Switch, withRouter, StackRoute } from 'react-router-native';
 import Login from './screens/Login';
 import GroupList from './screens/GroupList';
 import ProductList from './screens/ProductList';
 import Product from './screens/Product';
 import SideMenu from './components/SideMenu/SideMenu';
+import Header from './components/Header/Header';
 
-const Routes = () => (
+const Home = () => (
   <Switch>
-    <Route path="/login" component={Login} />
-    <Route path="/grouplist/:parentId" component={GroupList} />
-    <Route path="/productlist/:groupId" component={ProductList} />
-    <Route path="/product/:productId" component={Product} />
-    <Redirect from="/" to="/login" />
+    <View>
+      <Header />
+    </View>
   </Switch>
 );
 
-export default withRouter(Routes);
+const Routes = () => (
+  <Switch>
+    <Route exact path="/" component={Login} />
+    <Route path="/grouplist/:parentId" component={GroupList} />
+    <Route path="/productlist/:groupId" component={ProductList} />
+    <Route path="/product/:productId" component={Product} />
+  </Switch>
+);
+
+export default Routes;
