@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { ScrollView, Image, Text, FlatList, View, StyleSheet } from 'react-native';
+import { ScrollView, Image, Text, FlatList, View, StyleSheet, Button, Alert } from 'react-native';
 import Proptypes from 'prop-types';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { getProduct, getAddress, SERVER_URL } from './../utils/services';
+import { getProduct, getAddress, generateCode, SERVER_URL } from './../utils/services';
+import openMap from 'react-native-open-maps';
+import * as storage from './../utils/storage';
 
 const styles = StyleSheet.create({
   container: {
@@ -27,6 +29,14 @@ class Product extends Component {
     );
   }
 
+  handleGenerateCode = () => {
+    storage.getItem('user').then(user => {
+      generateCode(this.props.match.params.productId, user.Id).then(res => {
+        Alert.alert('Discount Title', 'You get discount successfully', [{ text: 'OK' }], { cancelable: false });
+      });
+    });
+  };
+
   render() {
     const { product } = this.state;
     return (
@@ -36,7 +46,19 @@ class Product extends Component {
             source={{ uri: `${SERVER_URL}img/${product.ImageURL}` }}
             style={{ alignSelf: 'stretch', height: 140 }}
           />
-          <FlatList data={this.state.addresses} renderItem={({ item }) => <Text>{item.Address}</Text>} />
+          <Button onPress={this.handleGenerateCode}>
+            <Text>Get Discount</Text>
+          </Button>
+          <FlatList
+            data={this.state.addresses}
+            renderItem={({ item }) => (
+              <View>
+                <Text>{item.Address}</Text>
+                <Button onPress={() => openMap({ latitude: item.Lat, longitude: item.Long })} title="Go" />
+              </View>
+            )}
+            keyExtractor={item => item.FK_SP_SupplierProduct}
+          />
         </View>
       </ScrollView>
     );

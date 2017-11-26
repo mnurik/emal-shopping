@@ -1,16 +1,16 @@
-import React, { Component } from 'react'
-import { View, Text, TouchableHighlight, TextInput, StyleSheet } from 'react-native'
-import Proptypes from 'prop-types'
-import colors from '../../config/style'
-import Color from 'color'
+import React, { Component } from 'react';
+import { View, Text, TouchableHighlight, TextInput, StyleSheet } from 'react-native';
+import Proptypes from 'prop-types';
+import colors from '../../config/style';
+import Color from 'color';
 
 export default class Input extends Component {
   getContainerStyle() {
-    let dynamicContainerStyle = style.container
+    let dynamicContainerStyle = style.container;
     if (this.props.editable === false) {
-      dynamicContainerStyle = StyleSheet.flatten([style.container, style.containerDisabled])
+      dynamicContainerStyle = StyleSheet.flatten([style.container, style.containerDisabled]);
     }
-    return dynamicContainerStyle
+    return dynamicContainerStyle;
   }
 
   render() {
@@ -26,7 +26,7 @@ export default class Input extends Component {
           value={this.props.value}
         />
       </View>
-    )
+    );
   }
 }
 
@@ -37,11 +37,11 @@ Input.propTypes = {
   defaultValue: Proptypes.string,
   value: Proptypes.string,
   onChangeText: Proptypes.func
-}
+};
 
 Input.defaultProps = {
   editable: true
-}
+};
 
 const styleVariables = {
   inputHeight: 48,
@@ -50,7 +50,7 @@ const styleVariables = {
     backgroundColor: 'white',
     backgroundColorModifier: 0.1
   }
-}
+};
 
 const style = StyleSheet.create({
   container: {
@@ -96,4 +96,4 @@ const style = StyleSheet.create({
     width: StyleSheet.hairlineWidth,
     backgroundColor: colors.border
   }
-})
+});

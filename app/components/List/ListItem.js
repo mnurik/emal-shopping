@@ -14,16 +14,7 @@ export default class ListItem extends Component {
         <View style={style.row}>
           {this.props.imgSrc && <Image style={{ width: 30, height: 30 }} source={{ uri: this.props.imgSrc }} />}
           <Text style={style.text}>{this.props.text}</Text>
-          {this.props.selected ? (
-            <Icon
-              checkmark={this.props.checkmark}
-              visible={this.props.visible}
-              iconBackground={this.props.iconBackground}
-            />
-          ) : (
-            <Icon />
-          )}
-          {this.props.customIcon}
+          {this.props.children}
         </View>
       </Link>
     );

@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
-import { View, StyleSheet, TouchableOpacity, Image, Text } from 'react-native'
-import Proptypes from 'prop-types'
+import React, { Component } from 'react';
+import { View, StyleSheet, TouchableOpacity, Image, Text } from 'react-native';
+import Proptypes from 'prop-types';
 
 export default class ClearButton extends Component {
   render() {
@@ -10,14 +10,14 @@ export default class ClearButton extends Component {
           <Text style={style.text}>{this.props.text}</Text>
         </View>
       </TouchableOpacity>
-    )
+    );
   }
 }
 
 ClearButton.propTypes = {
   text: Proptypes.string,
   onPress: Proptypes.func
-}
+};
 
 const style = StyleSheet.create({
   container: {
@@ -40,4 +40,4 @@ const style = StyleSheet.create({
     fontWeight: '300',
     padding: 20
   }
-})
+});

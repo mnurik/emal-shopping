@@ -45,5 +45,7 @@ export const fetchProducts = (groupId, pageNum = 1, size = 10) =>
 export const getProduct = productId => request(`GetProduct?productId=${productId}`);
 export const getAddress = (productId, supplierId) =>
   request(`GetSupplierProductAdress?productId=${productId}&supplierId=${supplierId}`);
+export const generateCode = (productId, userId) => request(`GenerateCode?productId=${productId}&userId=${userId}`);
+export const getGeneratedCodes = userId => request(`GetGeneratedDiscountCodes?userId=${userId}`);
 
 export const auth = (userName, password) => request(`Login?userName=${userName}&password=${password}`);
