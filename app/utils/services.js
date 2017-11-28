@@ -16,13 +16,6 @@ const getBody = response => {
   return response.Result;
 };
 
-/**
- * Checks if a network request came back fine, and throws an error if not
- *
- * @param  {object} response   A response from a network request
- *
- * @return {object|undefined} Returns either the response, or throws an error
- */
 const checkStatus = response => {
   if (response.status >= 200 && response.status < 300) {
     return response.response;
@@ -43,9 +36,14 @@ export const fetchProducts = (groupId, pageNum = 1, size = 10) =>
   request(`GetProducts?groupId=${groupId}&pageNum=${pageNum}&size=${size}`);
 
 export const getProduct = productId => request(`GetProduct?productId=${productId}`);
+
 export const getAddress = (productId, supplierId) =>
   request(`GetSupplierProductAdress?productId=${productId}&supplierId=${supplierId}`);
+
+export const getImages = productId => request(`GetImageNames?idProduct=${productId}`);
+
 export const generateCode = (productId, userId) => request(`GenerateCode?productId=${productId}&userId=${userId}`);
+
 export const getGeneratedCodes = userId => request(`GetGeneratedDiscountCodes?userId=${userId}`);
 
 export const auth = (userName, password) => request(`Login?userName=${userName}&password=${password}`);

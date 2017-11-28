@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { ScrollView, Image, Text, FlatList, View, StyleSheet, Button, Alert } from 'react-native';
 import Proptypes from 'prop-types';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { getProduct, getAddress, generateCode, SERVER_URL } from './../utils/services';
+import { getProduct, getAddress, generateCode, getImages, SERVER_URL } from './../utils/services';
 import openMap from 'react-native-open-maps';
 import * as storage from './../utils/storage';
 
@@ -17,7 +17,8 @@ const styles = StyleSheet.create({
 class Product extends Component {
   state = {
     product: {},
-    addresses: []
+    addresses: [],
+    images: []
   };
 
   componentDidMount() {
@@ -25,6 +26,7 @@ class Product extends Component {
     getProduct(productId).then(product =>
       this.setState({ product }, () => {
         getAddress(productId, this.state.product['FK_SP_Supplier']).then(addresses => this.setState({ addresses }));
+        getImages(productId).then(images => this.setState({ images }));
       })
     );
   }
@@ -38,19 +40,16 @@ class Product extends Component {
   };
 
   render() {
-    const { product } = this.state;
+    const { product, images, addresses } = this.state;
     return (
       <ScrollView>
         <View style={styles.container}>
-          <Image
-            source={{ uri: `${SERVER_URL}img/${product.ImageURL}` }}
-            style={{ alignSelf: 'stretch', height: 140 }}
-          />
-          <Button onPress={this.handleGenerateCode}>
-            <Text>Get Discount</Text>
-          </Button>
+          {images.map(image => (
+            <Image source={{ uri: `${SERVER_URL}img/${image}` }} style={{ alignSelf: 'stretch', height: 140 }} />
+          ))}
+          <Button onPress={this.handleGenerateCode} title="Get Discount" />
           <FlatList
-            data={this.state.addresses}
+            data={addresses}
             renderItem={({ item }) => (
               <View>
                 <Text>{item.Address}</Text>
