@@ -41,7 +41,7 @@ ListItem.defaultProps = {
 const style = StyleSheet.create({
   row: {
     paddingHorizontal: 20,
-    paddingVertical: 16,
+    paddingVertical: 36,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

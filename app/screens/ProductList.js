@@ -15,13 +15,13 @@ const styles = StyleSheet.create({
 });
 
 export default class ProductList extends Component {
-  state = { products: [] };
+  state = { products: [], pageNum: 1, waiting: false };
 
   render() {
     return (
       <View style={styles.container}>
         <FlatList
-          data={this.state.products.List}
+          data={this.state.products}
           renderItem={({ item }) => (
             <ListItem
               url={`/product/${item.Id}`}
@@ -31,6 +31,9 @@ export default class ProductList extends Component {
           )}
           keyExtractor={item => item.Id}
           ItemSeparatorComponent={Separator}
+          onEndReached={this.onEndReached}
+          onEndReachedThreshold={0.3}
+          renderFooter={<ActivityIndicator animating={this.state.waiting} />}
         />
       </View>
     );
@@ -39,6 +42,17 @@ export default class ProductList extends Component {
   componentDidMount() {
     fetchProducts(this.props.match.params.groupId).then(products => this.setState({ products }));
   }
+
+  onEndReached = () => {
+    this.setState(
+      prevState => ({ pageNum: prevState.pageNum + 1, waiting: true }),
+      () => {
+        fetchProducts(this.props.match.params.groupId, this.state.pageNum).then(products =>
+          this.setState(() => ({ products: this.state.products.concat(products), waiting: false }))
+        );
+      }
+    );
+  };
 }
 
 ProductList.propTypes = {

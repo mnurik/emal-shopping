@@ -33,7 +33,7 @@ const request = url =>
 export const fetchGroups = (parentId = 0) => request(`GetProductGroups?parentId=` + parentId);
 
 export const fetchProducts = (groupId, pageNum = 1, size = 10) =>
-  request(`GetProducts?groupId=${groupId}&pageNum=${pageNum}&size=${size}`);
+  request(`GetProducts?groupId=${groupId}&pageNum=${pageNum}&size=${size}`).then(res => res.List);
 
 export const getProduct = productId => request(`GetProduct?productId=${productId}`);
 
