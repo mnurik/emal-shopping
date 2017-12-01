@@ -33,8 +33,8 @@ export default class ProductList extends Component {
           ItemSeparatorComponent={Separator}
           onEndReached={this.onEndReached}
           onEndReachedThreshold={0.3}
-          renderFooter={<ActivityIndicator animating={this.state.waiting} />}
         />
+        <ActivityIndicator animating={this.state.waiting} />
       </View>
     );
   }

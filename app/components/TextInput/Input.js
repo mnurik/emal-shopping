@@ -19,6 +19,10 @@ export default class Input extends Component {
         <View style={style.border} />
         <TextInput
           style={style.input}
+          autoCapitalize="none"
+          placeholder={this.props.placeholder}
+          keyboardType={this.props.keyboardType || 'default'}
+          secureTextEntry={this.props.secureTextEntry || false}
           editable={this.props.editable}
           underlineColorAndroid="transparent"
           onChangeText={this.props.onChangeText}

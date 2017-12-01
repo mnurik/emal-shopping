@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StatusBar, KeyboardAvoidingView } from 'react-native';
+import { StatusBar, KeyboardAvoidingView, Text } from 'react-native';
 import Proptypes from 'prop-types';
 
 import { auth } from './../utils/services';
@@ -7,12 +7,12 @@ import Container from '../components/Container/Container';
 import Logo from '../components/Logo/Logo';
 import Input from '../components/TextInput/Input';
 import Button from '../components/Buttons/Button';
-import LastConverted from '../components/Text/LastConverted';
 import Header from '../components/Header/Header';
 import * as storage from './../utils/storage';
+import styles from './../config/index.style';
 
 export default class Home extends Component {
-  state = { username: '', password: '' };
+  state = { username: '', password: '', message: '' };
 
   componentDidMount() {
     storage.setItem('user', null).then(() => {
@@ -23,11 +23,18 @@ export default class Home extends Component {
   handleLogin = () => {
     console.log('pressed log in');
     auth(this.state.username, this.state.password)
-      .then(user => storage.setItem('user', user))
+      .then(user => {
+        if (user) {
+          return storage.setItem('user', user);
+        } else {
+          throw 'Username or password is not correct';
+        }
+      })
       .then(() => {
         this.props.checkUser();
         this.props.history.push('/grouplist/0');
-      });
+      })
+      .catch(e => this.setState({ message: e, username: '', password: '' }));
   };
 
   render() {
@@ -35,9 +42,18 @@ export default class Home extends Component {
       <Container>
         <StatusBar translucent={false} />
         <KeyboardAvoidingView behavior="padding">
-          <Input onChangeText={username => this.setState({ username })} />
-          <Input onChangeText={password => this.setState({ password })} />
+          <Input
+            onChangeText={username => this.setState({ username })}
+            placeholder="Enter username"
+            keyboardType="email-address"
+          />
+          <Input
+            onChangeText={password => this.setState({ password })}
+            placeholder="Enter password"
+            secureTextEntry={true}
+          />
         </KeyboardAvoidingView>
+        {this.state.message ? <Text style={styles.errorMessage}>{this.state.message}</Text> : null}
         <Button text="Log In" onPress={this.handleLogin} />
       </Container>
     );

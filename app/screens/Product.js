@@ -41,7 +41,7 @@ class Product extends Component {
     const { product, images, addresses } = this.state;
     return (
       <View style={styles.container}>
-        <StatusBar translucent={true} backgroundColor={'rgba(0, 0, 0, 0.3)'} barStyle={'light-content'} />
+        <StatusBar translucent={false} backgroundColor={'rgba(0, 0, 0, 0.3)'} barStyle={'light-content'} />
         <ScrollView
           style={styles.scrollview}
           contentContainerStyle={styles.scrollviewContentContainer}

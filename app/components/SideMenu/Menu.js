@@ -27,11 +27,11 @@ const Menu = ({ onItemSelected, authorized }) =>
       <Link to="/profile" onPress={onItemSelected}>
         <Text style={styles.item}>Profile</Text>
       </Link>
-      <Link to="/discounts" onPress={onItemSelected}>
-        <Text style={styles.item}>Discounts</Text>
-      </Link>
       <Link to="/grouplist/0" onPress={onItemSelected}>
         <Text style={styles.item}>Products</Text>
+      </Link>
+      <Link to="/discounts" onPress={onItemSelected}>
+        <Text style={styles.item}>Discounts</Text>
       </Link>
       <Link to="/login" onPress={onItemSelected}>
         <Text style={styles.item}>Log Out</Text>
