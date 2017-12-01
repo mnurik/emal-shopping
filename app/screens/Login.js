@@ -15,14 +15,19 @@ export default class Home extends Component {
   state = { username: '', password: '' };
 
   componentDidMount() {
-    storage.setItem('user', null);
+    storage.setItem('user', null).then(() => {
+      this.props.checkUser();
+    });
   }
 
   handleLogin = () => {
     console.log('pressed log in');
     auth(this.state.username, this.state.password)
       .then(user => storage.setItem('user', user))
-      .then(() => this.props.history.push('/grouplist/0'));
+      .then(() => {
+        this.props.checkUser();
+        this.props.history.push('/grouplist/0');
+      });
   };
 
   render() {
@@ -30,8 +35,8 @@ export default class Home extends Component {
       <Container>
         <StatusBar translucent={false} />
         <KeyboardAvoidingView behavior="padding">
-          <Input onChangeText={val => this.setState({ username: val })} />
-          <Input onChangeText={val => this.setState({ password: val })} />
+          <Input onChangeText={username => this.setState({ username })} />
+          <Input onChangeText={password => this.setState({ password })} />
         </KeyboardAvoidingView>
         <Button text="Log In" onPress={this.handleLogin} />
       </Container>

@@ -27,9 +27,13 @@ class Product extends Component {
 
   handleGenerateCode = () => {
     storage.getItem('user').then(user => {
-      generateCode(this.props.match.params.productId, user.Id).then(res => {
-        Alert.alert('Discount Title', 'You get discount successfully', [{ text: 'OK' }], { cancelable: false });
-      });
+      if (user) {
+        generateCode(this.props.match.params.productId, user.Id).then(res => {
+          Alert.alert('Discount Title', 'You get discount successfully', [{ text: 'OK' }], { cancelable: false });
+        });
+      } else {
+        Alert.alert('Discount Title', 'You should login', [{ text: 'OK' }], { cancelable: false });
+      }
     });
   };
 
