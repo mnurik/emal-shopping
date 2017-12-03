@@ -34,16 +34,18 @@ export default class GroupList extends Component {
   };
 
   componentDidMount() {
-    console.log(this.props);
     this.fetchData();
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log('you are here');
+    console.log(this.props);
     this.fetchData();
   }
 
-  handleClick = () => {
-    // got to item.IsContainer ? `/productlist/${item.Id}` : `/grouplist/${item.Id}`
+  handleClick = ({ url, parentId }) => {
+    console.log(url, parentId, 'yep bitch');
+    this.props.navigation.navigate(url, { parentId });
   };
 
   render() {
@@ -71,7 +73,12 @@ export default class GroupList extends Component {
           <List
             dataArray={this.state.groups}
             renderRow={item => (
-              <ListItem button onPress={this.handleClick}>
+              <ListItem
+                button
+                onPress={() =>
+                  this.handleClick({ url: item.IsContainer ? `ProductList` : `GroupList`, parentId: item.Id })
+                }
+              >
                 <Body>
                   <Text>{`${item.Name} (${item.Count})`}</Text>
                 </Body>

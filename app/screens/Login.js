@@ -10,9 +10,10 @@ import Button from '../components/Buttons/Button';
 import Header from '../components/Header/Header';
 import * as storage from './../utils/storage';
 import styles from './../config/index.style';
+import { Toast } from 'native-base';
 
 export default class Home extends Component {
-  state = { username: '', password: '', message: '' };
+  state = { username: '', password: '' };
 
   componentDidMount() {
     storage.setItem('user', null).then(() => {
@@ -34,13 +35,18 @@ export default class Home extends Component {
         this.props.checkUser();
         this.props.history.push('/grouplist/0');
       })
-      .catch(e => this.setState({ message: e, username: '', password: '' }));
+      .catch(text => {
+        Toast.show({
+          text,
+          buttonText: 'Okay'
+        });
+        this.setState({ username: '', password: '' });
+      });
   };
 
   render() {
     return (
       <Container>
-        <StatusBar translucent={false} />
         <KeyboardAvoidingView behavior="padding">
           <Input
             onChangeText={username => this.setState({ username })}
@@ -53,7 +59,6 @@ export default class Home extends Component {
             secureTextEntry={true}
           />
         </KeyboardAvoidingView>
-        {this.state.message ? <Text style={styles.errorMessage}>{this.state.message}</Text> : null}
         <Button text="Log In" onPress={this.handleLogin} />
       </Container>
     );

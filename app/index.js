@@ -14,7 +14,7 @@ import SideBar from './components/sidebar';
 const AppNavigator = DrawerNavigator(
   {
     Login: { screen: Login },
-    GroupList: { screen: GroupList },
+    GroupList: { path: 'grouplist/:parentId', screen: GroupList },
     Discounts: { screen: Discounts }
   },
   {
