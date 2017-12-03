@@ -1,42 +1,32 @@
 import React, { Component } from 'react';
-import { FlatList, ActivityIndicator, StyleSheet, View } from 'react-native';
-import { Link, Text } from 'react-router-native';
+import { ActivityIndicator, StyleSheet } from 'react-native';
 import Proptypes from 'prop-types';
-
 import { fetchGroups } from './../utils/services';
-import ListItem from '../components/List/ListItem';
-import Separator from '../components/List/Separator';
-import Container from '../components/Container/Container';
+import {
+  Container,
+  Header,
+  Title,
+  Content,
+  Button,
+  Icon,
+  List,
+  ListItem,
+  Text,
+  Left,
+  Right,
+  Body,
+  Item,
+  Input
+} from 'native-base';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#ecf0f1',
-    paddingTop: 30
+    backgroundColor: '#FFF'
   }
 });
 
 export default class GroupList extends Component {
   state = { groups: [], loading: true };
-
-  render() {
-    return (
-      <View style={styles.container}>
-        <ActivityIndicator animating={this.state.loading} />
-        <FlatList
-          data={this.state.groups}
-          renderItem={({ item }) => (
-            <ListItem
-              url={item.IsContainer ? `/productlist/${item.Id}` : `/grouplist/${item.Id}`}
-              text={`${item.Name} (${item.Count})`}
-            />
-          )}
-          keyExtractor={item => item.Id}
-          ItemSeparatorComponent={Separator}
-        />
-      </View>
-    );
-  }
 
   fetchData = parentId => {
     this.setState({ loading: true });
@@ -44,11 +34,56 @@ export default class GroupList extends Component {
   };
 
   componentDidMount() {
-    this.fetchData(this.props.match.params.parentId);
+    console.log(this.props);
+    this.fetchData();
   }
 
   componentWillReceiveProps(nextProps) {
-    this.fetchData(nextProps.match.params.parentId);
+    this.fetchData();
+  }
+
+  handleClick = () => {
+    // got to item.IsContainer ? `/productlist/${item.Id}` : `/grouplist/${item.Id}`
+  };
+
+  render() {
+    return (
+      <Container style={styles.container}>
+        <Header>
+          <Left>
+            {true ? (
+              <Button transparent onPress={() => this.props.navigation.navigate('DrawerOpen')}>
+                <Icon name="menu" />
+              </Button>
+            ) : (
+              <Button transparent onPress={() => this.props.navigation.goBack()}>
+                <Icon name="arrow-back" />
+              </Button>
+            )}
+          </Left>
+          <Body>
+            <Title>Basic List</Title>
+          </Body>
+          <Right />
+        </Header>
+
+        <Content>
+          <List
+            dataArray={this.state.groups}
+            renderRow={item => (
+              <ListItem button onPress={this.handleClick}>
+                <Body>
+                  <Text>{`${item.Name} (${item.Count})`}</Text>
+                </Body>
+                <Right>
+                  <Icon name="arrow-forward" />
+                </Right>
+              </ListItem>
+            )}
+          />
+        </Content>
+      </Container>
+    );
   }
 }
 
