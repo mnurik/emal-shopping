@@ -54,26 +54,41 @@ export default class Profile extends Component {
             <Text>{user.Name}</Text>
           </Body>
           <ListItem>
+            <Left>
+              <Icon name="ios-calendar-outline" />
+            </Left>
             <Body style={{ alignItems: 'center' }}>
-              <Text>{user.BirthDay}</Text>
+              <Text>{user.Birthday && user.Birthday.split('T')[0]}</Text>
             </Body>
           </ListItem>
           <ListItem>
+            <Left>
+              <Icon name="ios-call-outline" />
+            </Left>
             <Body style={{ alignItems: 'center' }}>
               <Text>{user.Phone}</Text>
             </Body>
           </ListItem>
           <ListItem>
+            <Left>
+              <Icon name="ios-home-outline" />
+            </Left>
             <Body style={{ alignItems: 'center' }}>
               <Text>{user.Address}</Text>
             </Body>
           </ListItem>
           <ListItem>
+            <Left>
+              <Icon name="ios-at-outline" />
+            </Left>
             <Body style={{ alignItems: 'center' }}>
               <Text>{user.UserName}</Text>
             </Body>
           </ListItem>
           <ListItem>
+            <Left>
+              <Icon name="key" />
+            </Left>
             <Body style={{ alignItems: 'center' }}>
               <Text>{user.Password}</Text>
             </Body>

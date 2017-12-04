@@ -95,7 +95,7 @@ class Product extends Component {
                   <Text>{item.Address}</Text>
                 </Body>
                 <Right>
-                  <Icon name="ios-map" />
+                  <Icon name="ios-redo-outline" />
                 </Right>
               </ListItem>
             )}
