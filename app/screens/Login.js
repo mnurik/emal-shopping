@@ -1,24 +1,19 @@
 import React, { Component } from 'react';
-import { StatusBar, KeyboardAvoidingView, Text } from 'react-native';
+import { StatusBar, KeyboardAvoidingView } from 'react-native';
 import Proptypes from 'prop-types';
 
 import { auth } from './../utils/services';
 import Container from '../components/Container/Container';
-import Logo from '../components/Logo/Logo';
 import Input from '../components/TextInput/Input';
-import Button from '../components/Buttons/Button';
-import Header from '../components/Header/Header';
 import * as storage from './../utils/storage';
 import styles from './../config/index.style';
-import { Toast } from 'native-base';
+import { Toast, Button, Text } from 'native-base';
 
 export default class Home extends Component {
   state = { username: '', password: '' };
 
-  componentDidMount() {
-    storage.setItem('user', null).then(() => {
-      this.props.checkUser();
-    });
+  componentWillMount() {
+    storage.setItem('user', null);
   }
 
   handleLogin = () => {
@@ -32,8 +27,7 @@ export default class Home extends Component {
         }
       })
       .then(() => {
-        this.props.checkUser();
-        this.props.history.push('/grouplist/0');
+        this.props.navigation.navigate('GroupList', { parentId: 0 });
       })
       .catch(text => {
         Toast.show({
@@ -59,7 +53,9 @@ export default class Home extends Component {
             secureTextEntry={true}
           />
         </KeyboardAvoidingView>
-        <Button text="Log In" onPress={this.handleLogin} />
+        <Button rounded full info onPress={this.handleLogin} style={{ flexDirection: 'row', justifyContent: 'center' }}>
+          <Text>Log In</Text>
+        </Button>
       </Container>
     );
   }

@@ -1,18 +1,27 @@
 import React, { Component } from 'react';
-import { ScrollView, Image, Text, FlatList, View, StyleSheet, Button, Alert } from 'react-native';
+import { ScrollView } from 'react-native';
 import Proptypes from 'prop-types';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { SERVER_URL } from './../utils/services';
 import * as storage from './../utils/storage';
-import ListItem from '../components/List/ListItem';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#ecf0f1',
-    paddingTop: 30
-  }
-});
+import {
+  Container,
+  Header,
+  Title,
+  Content,
+  Text,
+  H3,
+  Button,
+  Icon,
+  Footer,
+  FooterTab,
+  Left,
+  Right,
+  Body,
+  ListItem,
+  Thumbnail,
+  View
+} from 'native-base';
+const profileImage = require('./../img/no-photo.jpg');
 
 export default class Profile extends Component {
   state = { user: {} };
@@ -24,14 +33,53 @@ export default class Profile extends Component {
   render() {
     const { user } = this.state;
     return (
-      <View style={styles.container}>
-        <Text>{user.Name}</Text>
-        <ListItem text={user.BirthDay} />
-        <ListItem text={user.Phone} />
-        <ListItem text={user.Address} />
-        <ListItem text={user.UserName} />
-        <ListItem text={user.Password} />
-      </View>
+      <Container style={{ backgroundColor: '#fff' }}>
+        <Header style={{ backgroundColor: '#dc4239' }} androidStatusBarColor="#dc2015" iosBarStyle="light-content">
+          <Left>
+            <Button transparent onPress={() => this.props.navigation.navigate('DrawerOpen')}>
+              <Icon name="ios-menu" style={{ color: '#FFF' }} />
+            </Button>
+          </Left>
+          <Body>
+            <Title style={{ color: '#FFF' }}>Profile</Title>
+          </Body>
+          <Right />
+        </Header>
+
+        <Content padder>
+          <View style={{ alignItems: 'center' }}>
+            <Thumbnail large source={profileImage} />
+          </View>
+          <Body style={{ alignItems: 'center' }}>
+            <Text>{user.Name}</Text>
+          </Body>
+          <ListItem>
+            <Body style={{ alignItems: 'center' }}>
+              <Text>{user.BirthDay}</Text>
+            </Body>
+          </ListItem>
+          <ListItem>
+            <Body style={{ alignItems: 'center' }}>
+              <Text>{user.Phone}</Text>
+            </Body>
+          </ListItem>
+          <ListItem>
+            <Body style={{ alignItems: 'center' }}>
+              <Text>{user.Address}</Text>
+            </Body>
+          </ListItem>
+          <ListItem>
+            <Body style={{ alignItems: 'center' }}>
+              <Text>{user.UserName}</Text>
+            </Body>
+          </ListItem>
+          <ListItem>
+            <Body style={{ alignItems: 'center' }}>
+              <Text>{user.Password}</Text>
+            </Body>
+          </ListItem>
+        </Content>
+      </Container>
     );
   }
 }

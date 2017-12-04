@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Image } from 'react-native';
-
+import { getItem } from './../../utils/storage';
 import {
   Content,
   Text,
@@ -24,11 +24,28 @@ const drawerCover = require('../../img/drawer-cover.png');
 
 // const drawerImage = require('../../img/logo-kitchen-sink.png');
 
-const datas = [
+const common = [];
+
+const unauthorized = [
   {
     name: 'Login',
     route: 'Login',
-    icon: 'beer',
+    icon: 'ios-log-in',
+    bg: '#C5F442'
+  },
+  {
+    name: 'GroupList',
+    route: 'GroupList',
+    icon: 'cart',
+    bg: '#C5F442'
+  }
+];
+
+const authorized = [
+  {
+    name: 'Profile',
+    route: 'Profile',
+    icon: 'ios-person',
     bg: '#C5F442'
   },
   {
@@ -42,14 +59,29 @@ const datas = [
     route: 'Discounts',
     icon: 'archive',
     bg: '#C5F442'
+  },
+  {
+    name: 'SignOut',
+    route: 'Login',
+    icon: 'ios-log-out',
+    bg: '#C5F442'
   }
 ];
 
 class SideBar extends Component {
   state = {
     shadowOffsetWidth: 1,
-    shadowRadius: 4
+    shadowRadius: 4,
+    authorized: false
   };
+
+  componentDidMount() {
+    getItem('user').then(user => this.setState({ authorized: !!user }));
+  }
+
+  componentWillReceiveProps() {
+    getItem('user').then(user => this.setState({ authorized: !!user }));
+  }
 
   render() {
     return (
@@ -59,27 +91,13 @@ class SideBar extends Component {
             {/* <Image square style={styles.drawerImage} source={drawerImage} /> */}
           </Image>
           <List
-            dataArray={datas}
+            dataArray={this.state.authorized ? authorized : unauthorized}
             renderRow={data => (
               <ListItem button noBorder onPress={() => this.props.navigation.navigate(data.route)}>
                 <Left>
                   <Icon active name={data.icon} style={{ color: '#777', fontSize: 26, width: 30 }} />
                   <Text style={styles.text}>{data.name}</Text>
                 </Left>
-                {data.types && (
-                  <Right style={{ flex: 1 }}>
-                    <Badge
-                      style={{
-                        borderRadius: 3,
-                        height: 25,
-                        width: 72,
-                        backgroundColor: data.bg
-                      }}
-                    >
-                      <Text style={styles.badgeText}>{`${data.types} Types`}</Text>
-                    </Badge>
-                  </Right>
-                )}
               </ListItem>
             )}
           />

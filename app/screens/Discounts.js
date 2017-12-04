@@ -21,14 +21,14 @@ export default class Discounts extends Component {
   render() {
     return (
       <Container style={styles.container}>
-        <Header>
+        <Header style={{ backgroundColor: '#dc4239' }} androidStatusBarColor="#dc2015" iosBarStyle="light-content">
           <Left>
             <Button transparent onPress={() => this.props.navigation.navigate('DrawerOpen')}>
-              <Icon name="menu" />
+              <Icon name="menu" style={{ color: '#FFF' }} />
             </Button>
           </Left>
           <Body>
-            <Title>List</Title>
+            <Title style={{ color: '#FFF' }}>List</Title>
           </Body>
           <Right />
         </Header>

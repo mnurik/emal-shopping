@@ -59,7 +59,7 @@ const styleVariables = {
 const style = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    width: '85%',
+    width: '100%',
     height: styleVariables.inputHeight,
     borderRadius: styleVariables.borderRadius,
     flexDirection: 'row',

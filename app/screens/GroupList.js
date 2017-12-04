@@ -34,60 +34,69 @@ export default class GroupList extends Component {
   };
 
   componentDidMount() {
-    this.fetchData();
+    this.fetchData(0);
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('you are here');
-    console.log(this.props);
-    this.fetchData();
+    try {
+      this.fetchData(nextProps.navigation.state.params.parentId);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   handleClick = ({ url, parentId }) => {
-    console.log(url, parentId, 'yep bitch');
     this.props.navigation.navigate(url, { parentId });
   };
 
   render() {
     return (
       <Container style={styles.container}>
-        <Header>
+        <Header style={{ backgroundColor: '#dc4239' }} androidStatusBarColor="#dc2015" iosBarStyle="light-content">
           <Left>
             {true ? (
               <Button transparent onPress={() => this.props.navigation.navigate('DrawerOpen')}>
-                <Icon name="menu" />
+                <Icon name="menu" style={{ color: '#FFF' }} />
               </Button>
             ) : (
               <Button transparent onPress={() => this.props.navigation.goBack()}>
-                <Icon name="arrow-back" />
+                <Icon name="arrow-back" style={{ color: '#FFF' }} />
               </Button>
             )}
           </Left>
           <Body>
-            <Title>Basic List</Title>
+            <Title style={{ color: '#FFF' }}>Group List</Title>
           </Body>
-          <Right />
+          <Right>
+            <Button transparent>
+              <Icon name="search" style={{ color: '#FFF' }} />
+            </Button>
+          </Right>
         </Header>
 
         <Content>
-          <List
-            dataArray={this.state.groups}
-            renderRow={item => (
-              <ListItem
-                button
-                onPress={() =>
-                  this.handleClick({ url: item.IsContainer ? `ProductList` : `GroupList`, parentId: item.Id })
-                }
-              >
-                <Body>
-                  <Text>{`${item.Name} (${item.Count})`}</Text>
-                </Body>
-                <Right>
-                  <Icon name="arrow-forward" />
-                </Right>
-              </ListItem>
-            )}
-          />
+          {this.state.loading ? (
+            <ActivityIndicator size="large" style={{ marginVertical: 100 }} />
+          ) : (
+            <List
+              dataArray={this.state.groups}
+              renderRow={item => (
+                <ListItem
+                  button
+                  onPress={() =>
+                    this.handleClick({ url: item.IsContainer ? `ProductList` : `GroupList`, parentId: item.Id })
+                  }
+                >
+                  <Body>
+                    <Text>{`${item.Name} (${item.Count})`}</Text>
+                  </Body>
+                  <Right>
+                    <Icon name="arrow-forward" />
+                  </Right>
+                </ListItem>
+              )}
+            />
+          )}
         </Content>
       </Container>
     );

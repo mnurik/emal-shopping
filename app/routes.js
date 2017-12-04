@@ -1,25 +1,29 @@
 import React from 'react';
-import { View } from 'react-native';
-import { Route, Switch, withRouter, StackRoute, Redirect } from 'react-router-native';
+import { DrawerNavigator } from 'react-navigation';
 import Login from './screens/Login';
 import GroupList from './screens/GroupList';
 import ProductList from './screens/ProductList';
-import Product from './screens/Product';
-import SideMenu from './components/SideMenu/SideMenu';
-import Header from './components/Header/Header';
 import Discounts from './screens/Discounts';
+import Product from './screens/Product';
+import SideBar from './components/sidebar';
 import Profile from './screens/Profile';
 
-const Routes = ({ checkUser }) => (
-  <Switch>
-    <Route exact path="/login" render={props => <Login checkUser={checkUser} {...props} />} />
-    <Route exact path="/profile" component={Profile} />
-    <Route path="/grouplist/:parentId" component={GroupList} />
-    <Route path="/productlist/:groupId" component={ProductList} />
-    <Route path="/product/:productId" component={Product} />
-    <Route path="/discounts" component={Discounts} />
-    <Redirect from="/" to="grouplist/0" />
-  </Switch>
+const AppNavigator = DrawerNavigator(
+  {
+    Login: { screen: Login },
+    Discounts: { screen: Discounts },
+    Profile: { screen: Profile },
+    GroupList: { path: 'grouplist/:parentId', screen: GroupList },
+    ProductList: { path: 'productlist/:groupId', screen: ProductList },
+    Product: { path: 'product/:productId', screen: Product }
+  },
+  {
+    initialRouteName: 'GroupList',
+    contentOptions: {
+      activeTintColor: '#e91e63'
+    },
+    contentComponent: props => <SideBar {...props} />
+  }
 );
 
-export default Routes;
+export default AppNavigator;

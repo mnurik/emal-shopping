@@ -1,12 +1,32 @@
 import React, { Component } from 'react';
-import { ScrollView, Image, Text, FlatList, View, StyleSheet, Button, Alert, StatusBar } from 'react-native';
+import { StyleSheet, Alert } from 'react-native';
 import Proptypes from 'prop-types';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { getProduct, getAddress, generateCode, getImages } from './../utils/services';
 import openMap from 'react-native-open-maps';
 import * as storage from './../utils/storage';
-import styles, { colors } from './../config/index.style';
 import Carousel from './../components/Carousel/Carousel';
+import {
+  Container,
+  Header,
+  Title,
+  Content,
+  Button,
+  Icon,
+  List,
+  ListItem,
+  Text,
+  Left,
+  Right,
+  Body,
+  Item,
+  Input
+} from 'native-base';
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#FFF'
+  }
+});
 
 class Product extends Component {
   state = {
@@ -16,21 +36,30 @@ class Product extends Component {
   };
 
   componentDidMount() {
-    const { productId } = this.props.match.params;
-    getProduct(productId).then(product =>
-      this.setState({ product }, () => {
-        getAddress(productId, this.state.product['FK_SP_Supplier']).then(addresses => this.setState({ addresses }));
-        getImages(productId).then(images => this.setState({ images }));
-      })
-    );
+    try {
+      const { productId } = this.props.navigation.state.params;
+      getProduct(productId).then(product =>
+        this.setState({ product }, () => {
+          getAddress(productId, this.state.product['FK_SP_Supplier']).then(addresses => this.setState({ addresses }));
+          getImages(productId).then(images => this.setState({ images }));
+        })
+      );
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   handleGenerateCode = () => {
     storage.getItem('user').then(user => {
       if (user) {
-        generateCode(this.props.match.params.productId, user.Id).then(res => {
-          Alert.alert('Discount Title', 'You get discount successfully', [{ text: 'OK' }], { cancelable: false });
-        });
+        try {
+          const { productId } = this.props.navigation.state.params;
+          generateCode(productId, user.Id).then(res => {
+            Alert.alert('Discount Title', 'You get discount successfully', [{ text: 'OK' }], { cancelable: false });
+          });
+        } catch (err) {
+          console.log(err);
+        }
       } else {
         Alert.alert('Discount Title', 'You should login', [{ text: 'OK' }], { cancelable: false });
       }
@@ -40,29 +69,39 @@ class Product extends Component {
   render() {
     const { product, images, addresses } = this.state;
     return (
-      <View style={styles.container}>
-        <StatusBar translucent={false} backgroundColor={'rgba(0, 0, 0, 0.3)'} barStyle={'light-content'} />
-        <ScrollView
-          style={styles.scrollview}
-          contentContainerStyle={styles.scrollviewContentContainer}
-          indicatorStyle={'white'}
-          scrollEventThrottle={200}
-          directionalLockEnabled={true}
-        >
+      <Container style={styles.container}>
+        <Header style={{ backgroundColor: '#dc4239' }} androidStatusBarColor="#dc2015" iosBarStyle="light-content">
+          <Left>
+            <Button transparent onPress={() => this.props.navigation.goBack()}>
+              <Icon name="arrow-back" style={{ color: '#FFF' }} />
+            </Button>
+          </Left>
+          <Body>
+            <Title style={{ color: '#FFF' }}>Basic List</Title>
+          </Body>
+          <Right />
+        </Header>
+
+        <Content>
           <Carousel entries={images} />
-          <Button onPress={this.handleGenerateCode} title="Get Discount" />
-          <FlatList
-            data={addresses}
-            renderItem={({ item }) => (
-              <View>
-                <Text>{item.Address}</Text>
-                <Button onPress={() => openMap({ latitude: item.Lat, longitude: item.Long })} title="Go" />
-              </View>
+          <Button onPress={this.handleGenerateCode} full success>
+            <Text>Get Discount</Text>
+          </Button>
+          <List
+            dataArray={addresses}
+            renderRow={item => (
+              <ListItem button onPress={() => openMap({ latitude: item.Lat, longitude: item.Long })}>
+                <Body>
+                  <Text>{item.Address}</Text>
+                </Body>
+                <Right>
+                  <Icon name="ios-map" />
+                </Right>
+              </ListItem>
             )}
-            keyExtractor={item => item.FK_SP_SupplierProduct}
           />
-        </ScrollView>
-      </View>
+        </Content>
+      </Container>
     );
   }
 }

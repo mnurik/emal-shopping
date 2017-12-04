@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
-import { View, Text, Image, TouchableOpacity } from 'react-native'
-import { SERVER_URL } from './../../utils/services'
-import PropTypes from 'prop-types'
-import { ParallaxImage } from 'react-native-snap-carousel'
-import styles from './../../config/SliderEntry.style'
+import React, { Component } from 'react';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { SERVER_URL } from './../../utils/services';
+import PropTypes from 'prop-types';
+import { ParallaxImage } from 'react-native-snap-carousel';
+import styles from './../../config/SliderEntry.style';
 
 export default class SliderEntry extends Component {
   static propTypes = {
@@ -11,10 +11,10 @@ export default class SliderEntry extends Component {
     even: PropTypes.bool,
     parallax: PropTypes.bool,
     parallaxProps: PropTypes.object
-  }
+  };
 
   get image() {
-    const { imgSrc, parallax, parallaxProps, even } = this.props
+    const { imgSrc, parallax, parallaxProps, even } = this.props;
 
     return parallax ? (
       <ParallaxImage
@@ -28,25 +28,19 @@ export default class SliderEntry extends Component {
       />
     ) : (
       <Image source={{ uri: `${SERVER_URL}img/${imgSrc}` }} style={styles.image} />
-    )
+    );
   }
 
   render() {
-    const { even } = this.props
+    const { even } = this.props;
 
     return (
-      <TouchableOpacity
-        activeOpacity={1}
-        style={styles.slideInnerContainer}
-        onPress={() => {
-          alert(`You've clicked '${title}'`)
-        }}
-      >
+      <TouchableOpacity activeOpacity={1} style={styles.slideInnerContainer}>
         <View style={[styles.imageContainer, even ? styles.imageContainerEven : {}]}>
           {this.image}
           <View style={[styles.radiusMask, even ? styles.radiusMaskEven : {}]} />
         </View>
       </TouchableOpacity>
-    )
+    );
   }
 }
