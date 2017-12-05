@@ -31,19 +31,14 @@ const request = url =>
     .then(response => response.Result);
 
 export const fetchGroups = (parentId = 0) => request(`GetProductGroups?parentId=` + parentId);
-
 export const fetchProducts = (groupId, pageNum = 1, size = 10) =>
   request(`GetProducts?groupId=${groupId}&pageNum=${pageNum}&size=${size}`).then(res => res.List);
-
 export const getProduct = productId => request(`GetProduct?productId=${productId}`);
-
 export const getAddress = (productId, supplierId) =>
   request(`GetSupplierProductAdress?productId=${productId}&supplierId=${supplierId}`);
-
 export const getImages = productId => request(`GetImageNames?idProduct=${productId}`);
-
 export const generateCode = (productId, userId) => request(`GenerateCode?productId=${productId}&userId=${userId}`);
-
 export const getGeneratedCodes = userId => request(`GetGeneratedDiscountCodes?userId=${userId}`);
-
 export const auth = (userName, password) => request(`Login?userName=${userName}&password=${password}`);
+export const insertLogs = (groupId, customerId) =>
+  request(`InsertProductGroupsLog?groupId=${groupId}&customerId=${customerId}`);

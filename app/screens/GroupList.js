@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native';
 import Proptypes from 'prop-types';
-import { fetchGroups } from './../utils/services';
+import { fetchGroups, insertLogs } from './../utils/services';
+import { getItem } from './../utils/storage';
 import {
   Container,
   Header,
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
 });
 
 export default class GroupList extends Component {
-  state = { groups: [], loading: true };
+  state = { groups: [], loading: true, path: [] };
 
   fetchData = parentId => {
     this.setState({ loading: true });
@@ -37,16 +38,20 @@ export default class GroupList extends Component {
     this.fetchData(0);
   }
 
-  componentWillReceiveProps(nextProps) {
+  async componentWillReceiveProps(nextProps) {
+    const { parentId, name } = nextProps.navigation.state.params;
     try {
-      this.fetchData(nextProps.navigation.state.params.parentId);
+      const user = await getItem('user');
+      insertLogs(parentId, user.Id);
+      this.setState(prevState => ({ path: prevState.path.concat([name]) }));
+      this.fetchData(parentId);
     } catch (err) {
       console.log(err);
     }
   }
 
-  handleClick = ({ url, parentId }) => {
-    this.props.navigation.navigate(url, { parentId });
+  handleClick = (url, params) => {
+    this.props.navigation.navigate(url, params);
   };
 
   render() {
@@ -54,15 +59,9 @@ export default class GroupList extends Component {
       <Container style={styles.container}>
         <Header style={{ backgroundColor: '#dc4239' }} androidStatusBarColor="#dc2015" iosBarStyle="light-content">
           <Left>
-            {true ? (
-              <Button transparent onPress={() => this.props.navigation.navigate('DrawerOpen')}>
-                <Icon name="menu" style={{ color: '#FFF' }} />
-              </Button>
-            ) : (
-              <Button transparent onPress={() => this.props.navigation.goBack()}>
-                <Icon name="arrow-back" style={{ color: '#FFF' }} />
-              </Button>
-            )}
+            <Button transparent onPress={() => this.props.navigation.navigate('DrawerOpen')}>
+              <Icon name="menu" style={{ color: '#FFF' }} />
+            </Button>
           </Left>
           <Body>
             <Title style={{ color: '#FFF' }}>Group List</Title>
@@ -74,6 +73,17 @@ export default class GroupList extends Component {
           </Right>
         </Header>
 
+        {this.state.path.length ? (
+          <Header style={{ backgroundColor: '#dc4239' }} androidStatusBarColor="#dc2015" iosBarStyle="light-content">
+            <Left>
+              <Button transparent>
+                <Icon name="arrow-back" style={{ color: '#FFF' }} onPress={() => this.props.navigation.goBack()} />
+              </Button>
+            </Left>
+            <Text style={{ color: '#FFF' }}>{this.state.path.join(' / ')}</Text>
+          </Header>
+        ) : null}
+
         <Content>
           {this.state.loading ? (
             <ActivityIndicator size="large" style={{ marginVertical: 100 }} />
@@ -84,7 +94,10 @@ export default class GroupList extends Component {
                 <ListItem
                   button
                   onPress={() =>
-                    this.handleClick({ url: item.IsContainer ? `ProductList` : `GroupList`, parentId: item.Id })
+                    this.handleClick(item.IsContainer ? `ProductList` : `GroupList`, {
+                      parentId: item.Id,
+                      name: item.Name
+                    })
                   }
                 >
                   <Body>
