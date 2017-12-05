@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, StyleSheet, Image } from 'react-native';
 import Proptypes from 'prop-types';
 import { SERVER_URL } from './../utils/services';
 import * as storage from './../utils/storage';
@@ -19,9 +19,22 @@ import {
   Body,
   ListItem,
   Thumbnail,
-  View
+  View,
+  Row
 } from 'native-base';
+import otherStyles from './../components/sidebar/style';
 const profileImage = require('./../img/no-photo.jpg');
+const drawerCover = require('./../img/drawer-cover.png');
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#fff'
+  },
+  imageContainer: { alignItems: 'center', marginVertical: 50 },
+  row: { padding: 10 },
+  icon: { width: '20%', textAlign: 'center' },
+  text: { width: '80%', textAlign: 'center' }
+});
 
 export default class Profile extends Component {
   state = { user: {} };
@@ -33,7 +46,7 @@ export default class Profile extends Component {
   render() {
     const { user } = this.state;
     return (
-      <Container style={{ backgroundColor: '#fff' }}>
+      <Container style={styles.container}>
         <Header style={{ backgroundColor: '#dc4239' }} androidStatusBarColor="#dc2015" iosBarStyle="light-content">
           <Left>
             <Button transparent onPress={() => this.props.navigation.navigate('DrawerOpen')}>
@@ -46,53 +59,35 @@ export default class Profile extends Component {
           <Right />
         </Header>
 
-        <Content padder>
-          <View style={{ alignItems: 'center' }}>
-            <Thumbnail large source={profileImage} />
-          </View>
-          <Body style={{ alignItems: 'center' }}>
-            <Text>{user.Name}</Text>
-          </Body>
-          <ListItem>
-            <Left>
-              <Icon name="ios-calendar-outline" />
-            </Left>
-            <Body style={{ alignItems: 'center' }}>
-              <Text>{user.Birthday && user.Birthday.split('T')[0]}</Text>
-            </Body>
-          </ListItem>
-          <ListItem>
-            <Left>
-              <Icon name="ios-call-outline" />
-            </Left>
-            <Body style={{ alignItems: 'center' }}>
-              <Text>{user.Phone}</Text>
-            </Body>
-          </ListItem>
-          <ListItem>
-            <Left>
-              <Icon name="ios-home-outline" />
-            </Left>
-            <Body style={{ alignItems: 'center' }}>
-              <Text>{user.Address}</Text>
-            </Body>
-          </ListItem>
-          <ListItem>
-            <Left>
-              <Icon name="ios-at-outline" />
-            </Left>
-            <Body style={{ alignItems: 'center' }}>
-              <Text>{user.UserName}</Text>
-            </Body>
-          </ListItem>
-          <ListItem>
-            <Left>
-              <Icon name="key" />
-            </Left>
-            <Body style={{ alignItems: 'center' }}>
-              <Text>{user.Password}</Text>
-            </Body>
-          </ListItem>
+        <Content style={{ flex: 1, backgroundColor: '#fff', top: -1 }}>
+          <Image source={drawerCover} style={otherStyles.drawerCover}>
+            <View style={styles.imageContainer}>
+              <Thumbnail large source={profileImage} />
+              <Text style={{ fontSize: 22, backgroundColor: 'transparent', color: '#FFF', paddingTop: 10 }}>
+                {user.Name}
+              </Text>
+            </View>
+          </Image>
+          <Row style={styles.row}>
+            <Icon name="ios-calendar-outline" style={styles.icon} />
+            <Text style={styles.text}>{user.Birthday && user.Birthday.split('T')[0]}</Text>
+          </Row>
+          <Row style={styles.row}>
+            <Icon name="ios-call-outline" style={styles.icon} />
+            <Text style={styles.text}>{user.Phone}</Text>
+          </Row>
+          <Row style={styles.row}>
+            <Icon style={styles.icon} name="ios-home-outline" />
+            <Text style={styles.text}>{user.Address}</Text>
+          </Row>
+          <Row style={styles.row}>
+            <Icon style={styles.icon} name="ios-at-outline" />
+            <Text style={styles.text}>{user.UserName}</Text>
+          </Row>
+          <Row style={styles.row}>
+            <Icon style={styles.icon} name="key" />
+            <Text style={styles.text}>{user.Password}</Text>
+          </Row>
         </Content>
       </Container>
     );

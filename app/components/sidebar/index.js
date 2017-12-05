@@ -22,7 +22,7 @@ import styles from './style';
 
 const drawerCover = require('../../img/drawer-cover.png');
 
-// const drawerImage = require('../../img/logo-kitchen-sink.png');
+const drawerImage = require('../../img/logo-kitchen-sink.png');
 
 const common = [];
 
@@ -88,7 +88,7 @@ class SideBar extends Component {
       <Container>
         <Content bounces={false} style={{ flex: 1, backgroundColor: '#fff', top: -1 }}>
           <Image source={drawerCover} style={styles.drawerCover}>
-            {/* <Image square style={styles.drawerImage} source={drawerImage} /> */}
+            <Image square style={styles.drawerImage} source={drawerImage} />
           </Image>
           <List
             dataArray={this.state.authorized ? authorized : unauthorized}

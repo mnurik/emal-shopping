@@ -32,7 +32,7 @@ export default class ProductList extends Component {
   loadProducts = pageNum => fetchProducts(this.props.navigation.state.params.parentId, pageNum);
 
   componentDidMount() {
-    this.loadProducts().then(products => this.setState({ products, newItems: !!products.length }));
+    this.loadProducts().then(products => this.setState({ products, newItems: !(products.length < 10) }));
   }
 
   onEndReached = () => {

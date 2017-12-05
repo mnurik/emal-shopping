@@ -41,7 +41,7 @@ class Product extends Component {
       getProduct(productId).then(product =>
         this.setState({ product }, () => {
           getAddress(productId, this.state.product['FK_SP_Supplier']).then(addresses => this.setState({ addresses }));
-          getImages(productId).then(images => this.setState({ images }));
+          getImages(productId).then(images => this.setState({ images: images.concat(images) }));
         })
       );
     } catch (err) {

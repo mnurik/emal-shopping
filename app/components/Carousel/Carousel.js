@@ -1,30 +1,30 @@
-import React, { Component } from 'react'
-import { View } from 'react-native'
-import Carousel, { Pagination } from 'react-native-snap-carousel'
-import SliderEntry from './SliderEntry'
-import { sliderWidth, itemWidth } from './../../config/SliderEntry.style'
-import styles, { colors } from './../../config/index.style'
+import React, { Component } from 'react';
+import { View } from 'react-native';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
+import SliderEntry from './SliderEntry';
+import { sliderWidth, itemWidth } from './../../config/SliderEntry.style';
+import styles, { colors } from './../../config/index.style';
 
 export default class CarouselContainer extends Component {
   state = {
     slider1ActiveSlide: 1,
     slider1Ref: null
-  }
+  };
 
   _renderItemWithParallax({ item, index }, parallaxProps) {
-    return <SliderEntry imgSrc={item} even={(index + 1) % 2 === 0} parallax={true} parallaxProps={parallaxProps} />
+    return <SliderEntry imgSrc={item} even={(index + 1) % 2 === 0} parallax={true} parallaxProps={parallaxProps} />;
   }
 
   render() {
-    const { slider1ActiveSlide, slider1Ref } = this.state
-    const { entries } = this.props
+    const { slider1ActiveSlide, slider1Ref } = this.state;
+    const { entries } = this.props;
 
     return (
       <View style={styles.exampleContainer}>
         <Carousel
           ref={c => {
             if (!this.state.slider1Ref) {
-              this.setState({ slider1Ref: c })
+              this.setState({ slider1Ref: c });
             }
           }}
           data={entries}
@@ -44,7 +44,7 @@ export default class CarouselContainer extends Component {
           dotsLength={entries.length}
           activeDotIndex={slider1ActiveSlide}
           containerStyle={styles.paginationContainer}
-          dotColor={'rgba(255, 255, 255, 0.92)'}
+          dotColor={'rgba(0, 0, 0, 0.92)'}
           dotStyle={styles.paginationDot}
           inactiveDotColor={colors.black}
           inactiveDotOpacity={0.4}
@@ -53,6 +53,6 @@ export default class CarouselContainer extends Component {
           tappableDots={!!slider1Ref}
         />
       </View>
-    )
+    );
   }
 }
