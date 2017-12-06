@@ -77,7 +77,7 @@ export default class ProductList extends Component {
                   <Text numberOfLines={1} note>
                     {item.SupplierName}
                   </Text>
-                  <Text numberOfLines={1} note>{`${item.Price} AZN`}</Text>
+                  <Text numberOfLines={1} note style={{ color: '#C12127' }}>{`${item.Price} AZN`}</Text>
                 </Body>
               </ListItem>
             )}
