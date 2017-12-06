@@ -4,6 +4,7 @@ import Login from './screens/Login';
 import GroupList from './screens/GroupList';
 import ProductList from './screens/ProductList';
 import Discounts from './screens/Discounts';
+import Settings from './screens/Settings';
 import Product from './screens/Product';
 import SideBar from './components/sidebar';
 import Profile from './screens/Profile';
@@ -12,6 +13,7 @@ const AppNavigator = DrawerNavigator(
   {
     Login: { screen: Login },
     Discounts: { screen: Discounts },
+    Settings: { screen: Settings },
     Profile: { screen: Profile },
     GroupList: { path: 'grouplist/:parentId', screen: GroupList },
     ProductList: { path: 'productlist/:groupId', screen: ProductList },

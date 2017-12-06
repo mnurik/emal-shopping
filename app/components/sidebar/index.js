@@ -61,6 +61,12 @@ const authorized = [
     bg: '#C5F442'
   },
   {
+    name: 'Settings',
+    route: 'Settings',
+    icon: 'settings',
+    bg: '#C5F442'
+  },
+  {
     name: 'SignOut',
     route: 'Login',
     icon: 'ios-log-out',
