@@ -42,7 +42,8 @@ export default class GroupList extends Component {
     const { parentId, name } = nextProps.navigation.state.params;
     try {
       const user = await getItem('user');
-      insertLogs(parentId, user.Id);
+      const customerId = user ? user.Id : 0;
+      insertLogs(parentId, customerId);
       this.setState(prevState => ({ path: prevState.path.concat([name]) }));
       this.fetchData(parentId);
     } catch (err) {

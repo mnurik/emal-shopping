@@ -40,5 +40,5 @@ export const getImages = productId => request(`GetImageNames?idProduct=${product
 export const generateCode = (productId, userId) => request(`GenerateCode?productId=${productId}&userId=${userId}`);
 export const getGeneratedCodes = userId => request(`GetGeneratedDiscountCodes?userId=${userId}`);
 export const auth = (userName, password) => request(`Login?userName=${userName}&password=${password}`);
-export const insertLogs = (groupId, customerId) =>
+export const insertLogs = (groupId, customerId = 0) =>
   request(`InsertProductGroupsLog?groupId=${groupId}&customerId=${customerId}`);

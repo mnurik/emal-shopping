@@ -66,6 +66,11 @@ class Product extends Component {
     });
   };
 
+  openMap = (latitude = 0, longitude = 0) => {
+  	console.log('lat => ', latitude, ' long => ',longitude)
+     openMap({ latitude, longitude })
+  }
+
   render() {
     const { product, images, addresses } = this.state;
     return (
@@ -90,7 +95,7 @@ class Product extends Component {
           <List
             dataArray={addresses}
             renderRow={item => (
-              <ListItem button onPress={() => openMap({ latitude: item.Lat, longitude: item.Long })}>
+              <ListItem button onPress={() => this.openMap(item.Lat, item.Long)}>
                 <Body>
                   <Text>{item.Address}</Text>
                 </Body>
