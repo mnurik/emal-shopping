@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, StyleSheet } from 'react-native';
+import { ActivityIndicator, StyleSheet, StatusBar } from 'react-native';
 import Proptypes from 'prop-types';
 import { fetchGroups, insertLogs } from './../utils/services';
 import { getItem } from './../utils/storage';
@@ -27,7 +27,29 @@ const styles = StyleSheet.create({
 });
 
 export default class GroupList extends Component {
-  state = { groups: [], loading: true, path: [] };
+  state = { groups: [], loading: true, path: '' };
+
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: 'Group List',
+      headerBackTitle: null,
+      headerStyle: { backgroundColor: '#dc4239' },
+      headerTitleStyle: { color: '#fff' },
+      headerTintColor: '#fff',
+      headerRight: (
+        <Button transparent>
+          <Icon name="search" style={{ color: '#FFF' }} />
+        </Button>
+      ),
+      headerLeft: navigation.state.params ? (
+        undefined
+      ) : (
+        <Button transparent onPress={() => navigation.navigate('DrawerOpen')}>
+          <Icon name="ios-menu" style={{ color: '#FFF' }} />
+        </Button>
+      )
+    };
+  };
 
   fetchData = parentId => {
     this.setState({ loading: true });
@@ -35,20 +57,12 @@ export default class GroupList extends Component {
   };
 
   componentDidMount() {
-    this.fetchData(0);
-  }
-
-  async componentWillReceiveProps(nextProps) {
-    const { parentId, name } = nextProps.navigation.state.params;
-    try {
-      const user = await getItem('user');
-      const customerId = user ? user.Id : 0;
-      insertLogs(parentId, customerId);
-      this.setState(prevState => ({ path: prevState.path.concat([name]) }));
-      this.fetchData(parentId);
-    } catch (err) {
-      console.log(err);
+    let parentId;
+    if (this.props.navigation.state.params) {
+      parentId = this.props.navigation.state.params.parentId;
+      this.setState({ path: this.props.navigation.state.params.name });
     }
+    this.fetchData(parentId);
   }
 
   handleClick = (url, params) => {
@@ -58,30 +72,10 @@ export default class GroupList extends Component {
   render() {
     return (
       <Container style={styles.container}>
-        <Header style={{ backgroundColor: '#dc4239' }} androidStatusBarColor="#dc2015" iosBarStyle="light-content">
-          <Left>
-            <Button transparent onPress={() => this.props.navigation.navigate('DrawerOpen')}>
-              <Icon name="menu" style={{ color: '#FFF' }} />
-            </Button>
-          </Left>
-          <Body>
-            <Title style={{ color: '#FFF' }}>Group List</Title>
-          </Body>
-          <Right>
-            <Button transparent>
-              <Icon name="search" style={{ color: '#FFF' }} />
-            </Button>
-          </Right>
-        </Header>
-
+        <StatusBar barStyle="light-content" />
         {this.state.path.length ? (
           <Header style={{ backgroundColor: '#dc4239' }} androidStatusBarColor="#dc2015" iosBarStyle="light-content">
-            {/* <Left>
-              <Button transparent>
-                <Icon name="arrow-back" style={{ color: '#FFF' }} onPress={() => this.props.navigation.goBack()} />
-              </Button>
-            </Left> */}
-            <Text style={{ color: '#FFF' }}>{this.state.path.join(' / ')}</Text>
+            <Text style={{ color: '#FFF' }}>{this.state.path}</Text>
           </Header>
         ) : null}
 
@@ -97,7 +91,7 @@ export default class GroupList extends Component {
                   onPress={() =>
                     this.handleClick(item.IsContainer ? `ProductList` : `GroupList`, {
                       parentId: item.Id,
-                      name: item.Name
+                      name: `${this.state.path}/${item.Name}`
                     })
                   }
                 >

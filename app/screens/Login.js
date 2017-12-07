@@ -32,6 +32,9 @@ export default class Home extends Component {
       .catch(text => {
         Toast.show({
           text,
+          type: 'danger',
+          duration: '3000',
+          position: 'top',
           buttonText: 'Okay'
         });
         this.setState({ username: '', password: '' });
@@ -46,17 +49,19 @@ export default class Home extends Component {
             onChangeText={username => this.setState({ username })}
             placeholder="Enter username"
             keyboardType="email-address"
+            value={this.state.username}
           />
           <Input
             onChangeText={password => this.setState({ password })}
             placeholder="Enter password"
             secureTextEntry={true}
+            value={this.state.password}
           />
         </KeyboardAvoidingView>
         <Button
           rounded
           full
-          info
+          success
           onPress={this.handleLogin}
           style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: 10 }}
         >

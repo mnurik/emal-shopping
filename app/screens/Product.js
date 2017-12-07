@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Alert } from 'react-native';
+import { StyleSheet, Alert, ActivityIndicator } from 'react-native';
 import Proptypes from 'prop-types';
 import { getProduct, getAddress, generateCode, getImages } from './../utils/services';
 import openMap from 'react-native-open-maps';
@@ -89,27 +89,31 @@ class Product extends Component {
           <Right />
         </Header>
 
-        <Content>
-          <Carousel entries={images} />
-          <H1 style={{ textAlign: 'center', marginTop: 10 }}>{product.Name}</H1>
-          <H3 style={{ textAlign: 'center', marginTop: 10 }}>{product.Price + ' AZN'}</H3>
-          <Button onPress={() => this.handleGenerateCode(product.Name)} style={{ marginTop: 10 }} full success>
-            <Text>Get Discount</Text>
-          </Button>
-          <List
-            dataArray={addresses}
-            renderRow={item => (
-              <ListItem button onPress={() => this.openMap(item.Lat, item.Long)}>
-                <Body>
-                  <Text>{item.Address}</Text>
-                </Body>
-                <Right>
-                  <Icon name="ios-redo-outline" />
-                </Right>
-              </ListItem>
-            )}
-          />
-        </Content>
+        {product.hasOwnProperty('Id') ? (
+          <Content>
+            <Carousel entries={images} />
+            <H1 style={{ textAlign: 'center', marginTop: 10 }}>{product.Name}</H1>
+            <H3 style={{ textAlign: 'center', marginTop: 10 }}>{product.Price + ' AZN'}</H3>
+            <Button onPress={() => this.handleGenerateCode(product.Name)} style={{ marginTop: 10 }} full success>
+              <Text>Get Discount</Text>
+            </Button>
+            <List
+              dataArray={addresses}
+              renderRow={item => (
+                <ListItem button onPress={() => this.openMap(item.Lat, item.Long)}>
+                  <Body>
+                    <Text>{item.Address}</Text>
+                  </Body>
+                  <Right>
+                    <Icon name="ios-redo-outline" />
+                  </Right>
+                </ListItem>
+              )}
+            />
+          </Content>
+        ) : (
+          <ActivityIndicator style={{ paddingTop: 120 }} />
+        )}
       </Container>
     );
   }
