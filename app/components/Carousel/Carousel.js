@@ -12,7 +12,7 @@ export default class CarouselContainer extends Component {
   };
 
   _renderItemWithParallax({ item, index }, parallaxProps) {
-    return <SliderEntry imgSrc={item} even={(index + 1) % 2 === 0} parallax={true} parallaxProps={parallaxProps} />;
+    return <SliderEntry imgSrc={item} even={(index + 1) % 2 === 0} parallax={false} parallaxProps={parallaxProps} />;
   }
 
   render() {

@@ -28,7 +28,7 @@ export default class Discounts extends Component {
             </Button>
           </Left>
           <Body>
-            <Title style={{ color: '#FFF' }}>List</Title>
+            <Title style={{ color: '#FFF' }}>Disount List</Title>
           </Body>
           <Right />
         </Header>

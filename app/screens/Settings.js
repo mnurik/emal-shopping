@@ -61,6 +61,7 @@ export default class Settings extends Component {
                   mode="dropdown"
                   style={{ width: Platform.OS === 'ios' ? undefined : 200 }}
                   placeholder="Languages"
+                  onValueChange={() => {}}
                   renderHeader={backAction => (
                     <Header
                       style={{ backgroundColor: '#dc4239' }}
@@ -79,12 +80,11 @@ export default class Settings extends Component {
                     </Header>
                   )}
                 >
-                  <Item label="Azerbaijani" value="key0" />
-                  <Item label="English" value="key1" />
+                  <Item label="Azerbaijani" value="aze" />
+                  <Item label="English" value="eng" />
                 </Picker>
               </Form>
             </Body>
-            <Right>{Platform.OS === 'ios' && <Icon active name="arrow-forward" />}</Right>
           </ListItem>
         </Content>
       </Container>

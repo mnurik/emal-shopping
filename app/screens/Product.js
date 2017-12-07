@@ -19,7 +19,9 @@ import {
   Right,
   Body,
   Item,
-  Input
+  Input,
+  H1,
+  H3
 } from 'native-base';
 
 const styles = StyleSheet.create({
@@ -41,7 +43,7 @@ class Product extends Component {
       getProduct(productId).then(product =>
         this.setState({ product }, () => {
           getAddress(productId, this.state.product['FK_SP_Supplier']).then(addresses => this.setState({ addresses }));
-          getImages(productId).then(images => this.setState({ images: images.concat(images) }));
+          getImages(productId).then(images => this.setState({ images }));
         })
       );
     } catch (err) {
@@ -49,27 +51,27 @@ class Product extends Component {
     }
   }
 
-  handleGenerateCode = () => {
-    storage.getItem('user').then(user => {
-      if (user) {
-        try {
-          const { productId } = this.props.navigation.state.params;
-          generateCode(productId, user.Id).then(res => {
-            Alert.alert('Discount Title', 'You get discount successfully', [{ text: 'OK' }], { cancelable: false });
+  handleGenerateCode = async productName => {
+    const user = await storage.getItem('user');
+    if (user) {
+      try {
+        const { productId } = this.props.navigation.state.params;
+        generateCode(productId, user.Id).then(res => {
+          Alert.alert('Discount Title', `You get discount for ${productName} successfully`, [{ text: 'OK' }], {
+            cancelable: false
           });
-        } catch (err) {
-          console.log(err);
-        }
-      } else {
-        Alert.alert('Discount Title', 'You should login', [{ text: 'OK' }], { cancelable: false });
+        });
+      } catch (err) {
+        console.log(err);
       }
-    });
+    } else {
+      Alert.alert('Discount Title', 'You should login', [{ text: 'OK' }], { cancelable: false });
+    }
   };
 
   openMap = (latitude = 0, longitude = 0) => {
-  	console.log('lat => ', latitude, ' long => ',longitude)
-     openMap({ latitude, longitude })
-  }
+    openMap({ latitude, longitude });
+  };
 
   render() {
     const { product, images, addresses } = this.state;
@@ -82,14 +84,16 @@ class Product extends Component {
             </Button>
           </Left>
           <Body>
-            <Title style={{ color: '#FFF' }}>Basic List</Title>
+            <Title style={{ color: '#FFF' }}>Product Details</Title>
           </Body>
           <Right />
         </Header>
 
         <Content>
           <Carousel entries={images} />
-          <Button onPress={this.handleGenerateCode} full success>
+          <H1 style={{ textAlign: 'center', marginTop: 10 }}>{product.Name}</H1>
+          <H3 style={{ textAlign: 'center', marginTop: 10 }}>{product.Price + ' AZN'}</H3>
+          <Button onPress={() => this.handleGenerateCode(product.Name)} style={{ marginTop: 10 }} full success>
             <Text>Get Discount</Text>
           </Button>
           <List

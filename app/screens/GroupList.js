@@ -76,11 +76,11 @@ export default class GroupList extends Component {
 
         {this.state.path.length ? (
           <Header style={{ backgroundColor: '#dc4239' }} androidStatusBarColor="#dc2015" iosBarStyle="light-content">
-            <Left>
+            {/* <Left>
               <Button transparent>
                 <Icon name="arrow-back" style={{ color: '#FFF' }} onPress={() => this.props.navigation.goBack()} />
               </Button>
-            </Left>
+            </Left> */}
             <Text style={{ color: '#FFF' }}>{this.state.path.join(' / ')}</Text>
           </Header>
         ) : null}

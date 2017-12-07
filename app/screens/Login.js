@@ -53,7 +53,13 @@ export default class Home extends Component {
             secureTextEntry={true}
           />
         </KeyboardAvoidingView>
-        <Button rounded full info onPress={this.handleLogin} style={{ flexDirection: 'row', justifyContent: 'center' }}>
+        <Button
+          rounded
+          full
+          info
+          onPress={this.handleLogin}
+          style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: 10 }}
+        >
           <Text>Log In</Text>
         </Button>
       </Container>
