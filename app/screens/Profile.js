@@ -1,60 +1,42 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, Image } from 'react-native';
-import Proptypes from 'prop-types';
+import PropTypes from 'prop-types';
+import { ScrollView, Image } from 'react-native';
+import { Container, Title, Content, Text, Button, Icon, Left, Right, Body, Thumbnail, View, Row } from 'native-base';
+
 import { SERVER_URL } from './../utils/services';
-import * as storage from './../utils/storage';
-import {
-  Container,
-  Header,
-  Title,
-  Content,
-  Text,
-  H3,
-  Button,
-  Icon,
-  Footer,
-  FooterTab,
-  Left,
-  Right,
-  Body,
-  ListItem,
-  Thumbnail,
-  View,
-  Row
-} from 'native-base';
+import { getItem } from './../utils/storage';
+import Header from './../components/Header/Header';
 import otherStyles from './../components/sidebar/style';
+import styles from './../style/index';
+
 const profileImage = require('./../img/no-photo.jpg');
 const drawerCover = require('./../img/drawer-cover.png');
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#fff'
-  },
-  imageContainer: { alignItems: 'center', marginVertical: 50 },
-  row: { padding: 10 },
-  icon: { width: '20%', textAlign: 'center' },
-  text: { width: '80%', textAlign: 'center' }
-});
 
 export default class Profile extends Component {
   state = { user: {} };
 
+  static propTypes = {
+    navigation: PropTypes.shape({
+      navigate: PropTypes.func.isRequired
+    })
+  };
+
   componentDidMount() {
-    storage.getItem('user').then(user => this.setState({ user }));
+    getItem('user').then(user => this.setState({ user }));
   }
 
   render() {
     const { user } = this.state;
     return (
       <Container style={styles.container}>
-        <Header style={{ backgroundColor: '#dc4239' }} androidStatusBarColor="#dc2015" iosBarStyle="light-content">
+        <Header>
           <Left>
             <Button transparent onPress={() => this.props.navigation.navigate('DrawerOpen')}>
-              <Icon name="ios-menu" style={{ color: '#FFF' }} />
+              <Icon name="ios-menu" style={styles.whiteFont} />
             </Button>
           </Left>
           <Body>
-            <Title style={{ color: '#FFF' }}>Profile</Title>
+            <Title style={styles.whiteFont}>Profile</Title>
           </Body>
           <Right />
         </Header>

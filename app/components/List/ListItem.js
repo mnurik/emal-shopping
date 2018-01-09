@@ -5,7 +5,7 @@ import Proptypes from 'prop-types';
 
 import Icon from './Icon';
 
-import colors from '../../config/style';
+import colors from '../../style/style';
 
 export default class ListItem extends Component {
   render() {

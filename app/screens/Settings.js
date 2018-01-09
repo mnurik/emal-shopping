@@ -1,49 +1,29 @@
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
+import PropTypes from 'prop-types';
 import { Platform } from 'react-native';
-import {
-  Container,
-  Header,
-  Title,
-  Content,
-  Button,
-  Icon,
-  ListItem,
-  Text,
-  Badge,
-  Left,
-  Right,
-  Body,
-  Switch,
-  Radio,
-  Picker,
-  Separator,
-  Form
-} from 'native-base';
-import Proptypes from 'prop-types';
-import { getGeneratedCodes } from './../utils/services';
-import * as storage from './../utils/storage';
+import { Container, Title, Content, Button, Icon, ListItem, Left, Right, Body, Picker, Form } from 'native-base';
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#FFF'
-  }
-});
-
-const Item = Picker.Item;
+import Header from './../components/Header/Header';
+import styles from './../style/index';
 
 export default class Settings extends Component {
+  static propTypes = {
+    navigation: PropTypes.shape({
+      navigate: PropTypes.func.isRequired
+    })
+  };
+
   render() {
     return (
       <Container style={styles.container}>
-        <Header style={{ backgroundColor: '#dc4239' }} androidStatusBarColor="#dc2015" iosBarStyle="light-content">
+        <Header>
           <Left>
             <Button transparent onPress={() => this.props.navigation.navigate('DrawerOpen')}>
-              <Icon name="menu" style={{ color: '#FFF' }} />
+              <Icon name="menu" style={styles.whiteFont} />
             </Button>
           </Left>
           <Body>
-            <Title style={{ color: '#FFF' }}>Languages</Title>
+            <Title style={styles.whiteFont}>Languages</Title>
           </Body>
           <Right />
         </Header>
@@ -70,18 +50,18 @@ export default class Settings extends Component {
                     >
                       <Left>
                         <Button transparent onPress={backAction}>
-                          <Icon name="arrow-back" style={{ color: '#fff' }} />
+                          <Icon name="arrow-back" style={styles.whiteFont} />
                         </Button>
                       </Left>
                       <Body>
-                        <Title style={{ color: '#FFF' }}>Select Language</Title>
+                        <Title style={styles.whiteFont}>Select Language</Title>
                       </Body>
                       <Right />
                     </Header>
                   )}
                 >
-                  <Item label="Azerbaijani" value="aze" />
-                  <Item label="English" value="eng" />
+                  <Picker.Item label="Azerbaijani" value="aze" />
+                  <Picker.Item label="English" value="eng" />
                 </Picker>
               </Form>
             </Body>

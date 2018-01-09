@@ -1,34 +1,36 @@
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
-import { Container, Header, Title, Content, Button, Icon, Text, Left, Right, Body, List, ListItem } from 'native-base';
-import Proptypes from 'prop-types';
-import { getGeneratedCodes } from './../utils/services';
-import * as storage from './../utils/storage';
+import { Container, Title, Content, Button, Icon, Text, Left, Right, Body, List, ListItem } from 'native-base';
+import PropTypes from 'prop-types';
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#FFF'
-  }
-});
+import styles from './../style/index';
+import Header from './../components/Header/Header';
+import { getGeneratedCodes } from './../utils/services';
+import { getItem as getFromStorage } from './../utils/storage';
 
 export default class Discounts extends Component {
   state = { codes: [] };
 
+  static propTypes = {
+    navigation: PropTypes.shape({
+      navigate: PropTypes.func.isRequired
+    }).isRequired
+  };
+
   componentDidMount() {
-    storage.getItem('user').then(user => getGeneratedCodes(user.Id).then(codes => this.setState({ codes })));
+    getFromStorage('user').then(user => getGeneratedCodes(user.Id).then(codes => this.setState({ codes })));
   }
 
   render() {
     return (
       <Container style={styles.container}>
-        <Header style={{ backgroundColor: '#dc4239' }} androidStatusBarColor="#dc2015" iosBarStyle="light-content">
+        <Header>
           <Left>
             <Button transparent onPress={() => this.props.navigation.navigate('DrawerOpen')}>
-              <Icon name="menu" style={{ color: '#FFF' }} />
+              <Icon name="menu" style={styles.whiteFont} />
             </Button>
           </Left>
           <Body>
-            <Title style={{ color: '#FFF' }}>Disount List</Title>
+            <Title style={styles.whiteFont}>Discount List</Title>
           </Body>
           <Right />
         </Header>

@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { StyleSheet, Alert, ActivityIndicator } from 'react-native';
-import Proptypes from 'prop-types';
-import { getProduct, getAddress, generateCode, getImages } from './../utils/services';
+import PropTypes from 'prop-types';
 import openMap from 'react-native-open-maps';
+import { Alert, ActivityIndicator } from 'react-native';
+
+import { getProduct, getAddress, generateCode, getImages } from './../utils/services';
 import * as storage from './../utils/storage';
 import Carousel from './../components/Carousel/Carousel';
+import Header from './../components/Header/Header';
 import {
   Container,
-  Header,
   Title,
   Content,
   Button,
@@ -19,22 +20,26 @@ import {
   Right,
   Body,
   Item,
-  Input,
   H1,
   H3
 } from 'native-base';
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#FFF'
-  }
-});
+import styles from './../style/index';
 
 class Product extends Component {
   state = {
     product: {},
     addresses: [],
     images: []
+  };
+
+  static propTypes = {
+    navigation: PropTypes.shape({
+      state: PropTypes.shape({
+        params: PropTypes.shape({
+          productId: PropTypes.number.isRequired
+        }).isRequired
+      }).isRequired
+    }).isRequired
   };
 
   componentDidMount() {
@@ -77,17 +82,7 @@ class Product extends Component {
     const { product, images, addresses } = this.state;
     return (
       <Container style={styles.container}>
-        <Header style={{ backgroundColor: '#dc4239' }} androidStatusBarColor="#dc2015" iosBarStyle="light-content">
-          <Left>
-            <Button transparent onPress={() => this.props.navigation.goBack()}>
-              <Icon name="arrow-back" style={{ color: '#FFF' }} />
-            </Button>
-          </Left>
-          <Body>
-            <Title style={{ color: '#FFF' }}>Product Details</Title>
-          </Body>
-          <Right />
-        </Header>
+        <Header title="Product Details" navigation={this.props.navigation} />
 
         {product.hasOwnProperty('Id') ? (
           <Content>

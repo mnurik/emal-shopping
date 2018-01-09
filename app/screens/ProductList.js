@@ -1,38 +1,29 @@
 import React, { Component } from 'react';
-import { FlatList, ActivityIndicator, StyleSheet } from 'react-native';
-import Proptypes from 'prop-types';
+import PropTypes from 'prop-types';
+import { FlatList, ActivityIndicator } from 'react-native';
+import { Container, Title, Content, Button, List, ListItem, Text, Thumbnail, Left, Body } from 'native-base';
 
 import { fetchProducts, SERVER_URL } from './../utils/services';
-import {
-  Container,
-  Header,
-  Title,
-  Content,
-  Button,
-  Icon,
-  List,
-  ListItem,
-  Text,
-  Thumbnail,
-  Left,
-  Body,
-  Right,
-  View
-} from 'native-base';
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#FFF'
-  }
-});
+import Header from './../components/Header/Header';
+import styles from './../style/index';
 
 export default class ProductList extends Component {
-  state = { products: [], pageNum: 1, newItems: false };
+  state = { products: [], pageNum: 1, newItems: false, loading: true };
+
+  static propTypes = {
+    navigation: PropTypes.shape({
+      state: PropTypes.shape({
+        params: PropTypes.shape({
+          parentId: PropTypes.number.isRequired
+        }).isRequired
+      }).isRequired
+    }).isRequired
+  };
 
   loadProducts = pageNum => fetchProducts(this.props.navigation.state.params.parentId, pageNum);
 
   componentDidMount() {
-    this.loadProducts().then(products => this.setState({ products, newItems: products.length === 10 }));
+    this.loadProducts().then(products => this.setState({ products, newItems: products.length === 10, loading: false }));
   }
 
   onEndReached = () => {
@@ -53,35 +44,29 @@ export default class ProductList extends Component {
   render() {
     return (
       <Container style={styles.container}>
-        <Header style={{ backgroundColor: '#dc4239' }} androidStatusBarColor="#dc2015" iosBarStyle="light-content">
-          <Left>
-            <Button transparent onPress={() => this.props.navigation.goBack()}>
-              <Icon name="arrow-back" style={{ color: '#FFF' }} />
-            </Button>
-          </Left>
-          <Body>
-            <Title style={{ color: '#FFF' }}>List Products</Title>
-          </Body>
-          <Right />
-        </Header>
+        <Header title="List Products" navigation={this.props.navigation} />
         <Content>
-          <List
-            dataArray={this.state.products}
-            renderRow={item => (
-              <ListItem avatar onPress={() => this.props.navigation.navigate('Product', { productId: item.Id })}>
-                <Left>
-                  <Thumbnail small source={{ uri: `${SERVER_URL}img/${item.ImageURL}` }} />
-                </Left>
-                <Body>
-                  <Text>{item.Name}</Text>
-                  <Text numberOfLines={1} note>
-                    {item.SupplierName}
-                  </Text>
-                  <Text numberOfLines={1} note style={{ color: '#C12127' }}>{`${item.Price} AZN`}</Text>
-                </Body>
-              </ListItem>
-            )}
-          />
+          {this.state.loading ? (
+            <ActivityIndicator size="large" style={{ marginVertical: 100 }} />
+          ) : (
+            <List
+              dataArray={this.state.products}
+              renderRow={item => (
+                <ListItem avatar onPress={() => this.props.navigation.navigate('Product', { productId: item.Id })}>
+                  <Left>
+                    <Thumbnail small source={{ uri: `${SERVER_URL}img/${item.ImageURL}` }} />
+                  </Left>
+                  <Body>
+                    <Text>{item.Name}</Text>
+                    <Text numberOfLines={1} note>
+                      {item.SupplierName}
+                    </Text>
+                    <Text numberOfLines={1} note style={{ color: '#C12127' }}>{`${item.Price} AZN`}</Text>
+                  </Body>
+                </ListItem>
+              )}
+            />
+          )}
           {this.state.newItems ? (
             <Button full transparent info onPress={this.onEndReached}>
               <Text>Load More...</Text>
@@ -92,7 +77,3 @@ export default class ProductList extends Component {
     );
   }
 }
-
-ProductList.propTypes = {
-  navigation: Proptypes.object
-};

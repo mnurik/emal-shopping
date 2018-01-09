@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import SliderEntry from './SliderEntry';
-import { sliderWidth, itemWidth } from './../../config/SliderEntry.style';
-import styles, { colors } from './../../config/index.style';
+import { sliderWidth, itemWidth } from './../../style/SliderEntry.style';
+import styles, { colors } from './../../style/index.style';
 
 export default class CarouselContainer extends Component {
   state = {

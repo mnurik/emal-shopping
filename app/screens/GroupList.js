@@ -1,55 +1,46 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, StyleSheet, StatusBar } from 'react-native';
-import Proptypes from 'prop-types';
-import { fetchGroups, insertLogs } from './../utils/services';
-import { getItem } from './../utils/storage';
-import {
-  Container,
-  Header,
-  Title,
-  Content,
-  Button,
-  Icon,
-  List,
-  ListItem,
-  Text,
-  Left,
-  Right,
-  Body,
-  Item,
-  Input
-} from 'native-base';
+import PropTypes from 'prop-types';
+import { ActivityIndicator, StatusBar } from 'react-native';
+import { Container, Title, Content, Button, Icon, List, ListItem, Text, Left, Right, Body, Item } from 'native-base';
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#FFF'
-  }
-});
+import Header from './../components/Header/Header';
+import { fetchGroups, insertLogs } from './../utils/services';
+import styles from './../style/index';
 
 export default class GroupList extends Component {
   state = { groups: [], loading: true, path: '' };
 
-  static navigationOptions = ({ navigation }) => {
-    return {
-      title: 'Group List',
-      headerBackTitle: null,
-      headerStyle: { backgroundColor: '#dc4239' },
-      headerTitleStyle: { color: '#fff' },
-      headerTintColor: '#fff',
-      headerRight: (
-        <Button transparent>
-          <Icon name="search" style={{ color: '#FFF' }} />
-        </Button>
-      ),
-      headerLeft: navigation.state.params ? (
-        undefined
-      ) : (
-        <Button transparent onPress={() => navigation.navigate('DrawerOpen')}>
-          <Icon name="ios-menu" style={{ color: '#FFF' }} />
-        </Button>
-      )
-    };
+  static propTypes = {
+    navigation: PropTypes.shape({
+      navigate: PropTypes.func.isRequired,
+      state: PropTypes.shape({
+        params: PropTypes.shape({
+          parentId: PropTypes.number.isRequired,
+          name: PropTypes.string.isRequired
+        })
+      }).isRequired
+    }).isRequired
   };
+
+  static navigationOptions = ({ navigation }) => ({
+    title: 'Group List',
+    headerBackTitle: null,
+    headerStyle: { backgroundColor: '#dc4239' },
+    headerTitleStyle: { color: '#fff' },
+    headerTintColor: '#fff',
+    headerRight: (
+      <Button transparent>
+        <Icon name="search" style={styles.whiteFont} />
+      </Button>
+    ),
+    headerLeft: navigation.state.params ? (
+      undefined
+    ) : (
+      <Button transparent onPress={() => navigation.navigate('DrawerOpen')}>
+        <Icon name="ios-menu" style={styles.whiteFont} />
+      </Button>
+    )
+  });
 
   fetchData = parentId => {
     this.setState({ loading: true });
@@ -58,9 +49,10 @@ export default class GroupList extends Component {
 
   componentDidMount() {
     let parentId;
-    if (this.props.navigation.state.params) {
+    if (this.props.navigation.state.hasOwnProperty('params')) {
+      let path = this.props.navigation.state.params.name;
       parentId = this.props.navigation.state.params.parentId;
-      this.setState({ path: this.props.navigation.state.params.name });
+      this.setState({ path });
     }
     this.fetchData(parentId);
   }
@@ -73,9 +65,9 @@ export default class GroupList extends Component {
     return (
       <Container style={styles.container}>
         <StatusBar barStyle="light-content" />
-        {this.state.path.length ? (
-          <Header style={{ backgroundColor: '#dc4239' }} androidStatusBarColor="#dc2015" iosBarStyle="light-content">
-            <Text style={{ color: '#FFF' }}>{this.state.path}</Text>
+        {this.state.path ? (
+          <Header>
+            <Text style={styles.whiteFont}>{this.state.path}</Text>
           </Header>
         ) : null}
 
@@ -110,7 +102,3 @@ export default class GroupList extends Component {
     );
   }
 }
-
-GroupList.propTypes = {
-  navigation: Proptypes.object
-};

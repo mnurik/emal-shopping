@@ -1,34 +1,37 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Toast, Button, Text } from 'native-base';
 import { StatusBar, KeyboardAvoidingView } from 'react-native';
-import Proptypes from 'prop-types';
 
 import { auth } from './../utils/services';
 import Container from '../components/Container/Container';
 import Input from '../components/TextInput/Input';
-import * as storage from './../utils/storage';
-import styles from './../config/index.style';
-import { Toast, Button, Text } from 'native-base';
+import { setItem } from './../utils/storage';
+import styles from './../style/index.style';
 
-export default class Home extends Component {
+export default class Login extends Component {
   state = { username: '', password: '' };
 
+  static propTypes = {
+    navigation: PropTypes.shape({
+      navigate: PropTypes.func.isRequired
+    }).isRequired
+  };
+
   componentWillMount() {
-    storage.setItem('user', null);
+    setItem('user', null);
   }
 
   handleLogin = () => {
-    console.log('pressed log in');
     auth(this.state.username, this.state.password)
       .then(user => {
         if (user) {
-          return storage.setItem('user', user);
+          return setItem('user', user);
         } else {
           throw 'Username or password is not correct';
         }
       })
-      .then(() => {
-        this.props.navigation.navigate('GroupList', { parentId: 0 });
-      })
+      .then(() => this.props.navigation.navigate('GroupList', { parentId: 0 }))
       .catch(text => {
         Toast.show({
           text,
@@ -71,8 +74,3 @@ export default class Home extends Component {
     );
   }
 }
-
-Home.propTypes = {
-  navigation: Proptypes.object,
-  dispatch: Proptypes.func
-};

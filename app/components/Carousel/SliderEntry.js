@@ -3,7 +3,7 @@ import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { SERVER_URL } from './../../utils/services';
 import PropTypes from 'prop-types';
 import { ParallaxImage } from 'react-native-snap-carousel';
-import styles from './../../config/SliderEntry.style';
+import styles from './../../style/SliderEntry.style';
 
 export default class SliderEntry extends Component {
   static propTypes = {
