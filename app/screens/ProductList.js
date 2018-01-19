@@ -49,24 +49,25 @@ export default class ProductList extends Component {
           {this.state.loading ? (
             <ActivityIndicator size="large" style={{ marginVertical: 100 }} />
           ) : (
-            <List
-              dataArray={this.state.products}
-              renderRow={item => (
-                <ListItem avatar onPress={() => this.props.navigation.navigate('Product', { productId: item.Id })}>
-                  <Left>
-                    <Thumbnail small source={{ uri: `${SERVER_URL}img/${item.ImageURL}` }} />
-                  </Left>
-                  <Body>
-                    <Text>{item.Name}</Text>
-                    <Text numberOfLines={1} note>
-                      {item.SupplierName}
-                    </Text>
-                    <Text numberOfLines={1} note style={{ color: '#C12127' }}>{`${item.Price} AZN`}</Text>
-                  </Body>
-                </ListItem>
-              )}
-            />
-          )}
+              this.state.products.length ?
+                <List
+                  dataArray={this.state.products}
+                  renderRow={item => (
+                    <ListItem avatar onPress={() => this.props.navigation.navigate('Product', { productId: item.Id })}>
+                      <Left>
+                        <Thumbnail small source={{ uri: `${SERVER_URL}img/${item.ImageURL}` }} />
+                      </Left>
+                      <Body>
+                        <Text>{item.Name}</Text>
+                        <Text numberOfLines={1} note>
+                          {item.SupplierName}
+                        </Text>
+                        <Text numberOfLines={1} note style={{ color: '#C12127' }}>{`${item.Price} AZN`}</Text>
+                      </Body>
+                    </ListItem>
+                  )}
+                /> : <Body><Text>No Products</Text></Body>
+            )}
           {this.state.newItems ? (
             <Button full transparent info onPress={this.onEndReached}>
               <Text>Load More...</Text>

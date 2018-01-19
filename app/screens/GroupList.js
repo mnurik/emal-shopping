@@ -36,10 +36,10 @@ export default class GroupList extends Component {
     headerLeft: navigation.state.params ? (
       undefined
     ) : (
-      <Button transparent onPress={() => navigation.navigate('DrawerOpen')}>
-        <Icon name="ios-menu" style={styles.whiteFont} />
-      </Button>
-    )
+        <Button transparent onPress={() => navigation.navigate('DrawerOpen')}>
+          <Icon name="ios-menu" style={styles.whiteFont} />
+        </Button>
+      )
   });
 
   fetchData = parentId => {
@@ -49,7 +49,7 @@ export default class GroupList extends Component {
 
   componentDidMount() {
     let parentId;
-    if (this.props.navigation.state.hasOwnProperty('params')) {
+    if (this.props.navigation.state.params) {
       let path = this.props.navigation.state.params.name;
       parentId = this.props.navigation.state.params.parentId;
       this.setState({ path });
@@ -75,28 +75,28 @@ export default class GroupList extends Component {
           {this.state.loading ? (
             <ActivityIndicator size="large" style={{ marginVertical: 100 }} />
           ) : (
-            <List
-              dataArray={this.state.groups}
-              renderRow={item => (
-                <ListItem
-                  button
-                  onPress={() =>
-                    this.handleClick(item.IsContainer ? `ProductList` : `GroupList`, {
-                      parentId: item.Id,
-                      name: `${this.state.path}/${item.Name}`
-                    })
-                  }
-                >
-                  <Body>
-                    <Text>{`${item.Name} (${item.Count})`}</Text>
-                  </Body>
-                  <Right>
-                    <Icon name="arrow-forward" />
-                  </Right>
-                </ListItem>
-              )}
-            />
-          )}
+              <List
+                dataArray={this.state.groups}
+                renderRow={item => (
+                  <ListItem
+                    button
+                    onPress={() =>
+                      this.handleClick(item.IsContainer ? `ProductList` : `GroupList`, {
+                        parentId: item.Id,
+                        name: `${this.state.path}/${item.Name}`
+                      })
+                    }
+                  >
+                    <Body>
+                      <Text>{`${item.Name} (${item.Count})`}</Text>
+                    </Body>
+                    <Right>
+                      <Icon name="arrow-forward" />
+                    </Right>
+                  </ListItem>
+                )}
+              />
+            )}
         </Content>
       </Container>
     );

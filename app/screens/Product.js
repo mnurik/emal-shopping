@@ -92,12 +92,33 @@ class Product extends Component {
             <Button onPress={() => this.handleGenerateCode(product.Name)} style={{ marginTop: 10 }} full success>
               <Text>Get Discount</Text>
             </Button>
+            <ListItem>
+              <Body>
+                <Text style={styles.boldFont} >Description</Text>
+                <Text numberOfLines={1} note style={styles.maroonFont}>{product.Description}</Text>
+              </Body>
+            </ListItem>
+            <ListItem>
+              <Body>
+                <Text style={styles.boldFont} >Supplier Name</Text>
+                <Text numberOfLines={1} note style={styles.maroonFont}>{product.SupplierName}</Text>
+              </Body>
+            </ListItem>
+            <ListItem>
+              <Body>
+                <Text style={styles.boldFont} >Supplier URL</Text>
+                <Text numberOfLines={1} note style={styles.maroonFont}>{product.SupplierURL}</Text>
+              </Body>
+            </ListItem>
             <List
               dataArray={addresses}
               renderRow={item => (
                 <ListItem button onPress={() => this.openMap(item.Lat, item.Long)}>
                   <Body>
-                    <Text>{item.Address}</Text>
+                    <Text style={styles.grayFont}>{item.CityName}</Text>
+                    <Text style={styles.grayFont}>{item.Address}</Text>
+                    <Text style={styles.grayFont}>{item.Phone}</Text>
+                    <Text style={styles.grayFont}>Email: {item.Email}</Text>
                   </Body>
                   <Right>
                     <Icon name="ios-redo-outline" />
@@ -107,8 +128,8 @@ class Product extends Component {
             />
           </Content>
         ) : (
-          <ActivityIndicator style={{ paddingTop: 120 }} />
-        )}
+            <ActivityIndicator style={{ paddingTop: 120 }} />
+          )}
       </Container>
     );
   }
